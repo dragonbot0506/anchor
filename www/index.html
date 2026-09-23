@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anchor — DPDR training games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E8ECE9; --card:#FBFCFB; --ink:#1B2430; --muted:#5A6672; --line:#CDD5D0;
+  --amber:#C8791A; --teal:#2E6F6A; --teal-soft:#D7E7E4; --amber-soft:#F5E3CB; --danger:#9B3B2E;
+  --c-green:#2E8B57; --c-red:#C0392B; --c-blue:#2E63C4; --c-yellow:#D9A400; --c-purple:#7A3FA0; --c-orange:#E07B1A;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#141A1C; --card:#1E2629; --ink:#EDF1EF; --muted:#A3AFAB; --line:#334040;
+  --amber:#E5A04A; --teal:#5FB3AA; --teal-soft:#1F3A38; --amber-soft:#3E2E18; --danger:#E07A6A; } }
+:root[data-theme="dark"]{
+  --bg:#141A1C; --card:#1E2629; --ink:#EDF1EF; --muted:#A3AFAB; --line:#334040;
+  --amber:#E5A04A; --teal:#5FB3AA; --teal-soft:#1F3A38; --amber-soft:#3E2E18; --danger:#E07A6A; }
+html{scroll-padding-top:env(safe-area-inset-top,0px); height:100%}
+*{box-sizing:border-box}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif; font-size:17px; line-height:1.5; height:100%}
+main{max-width:560px; margin:0 auto; padding:18px 18px 110px}
+h1{font-size:1.9rem; line-height:1.1; margin:0 0 6px; letter-spacing:-.01em}
+h2{font-size:1.3rem; margin:0 0 6px; line-height:1.2}
+h3{font-size:1.05rem; margin:16px 0 6px}
+p{margin:0 0 12px}
+.muted{color:var(--muted)} .small{font-size:.92rem}
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; margin:12px 0}
+.tag{display:inline-block; font-size:.78rem; padding:2px 9px; border-radius:99px; background:var(--teal-soft); color:var(--teal); font-weight:700}
+.tag.exp{background:var(--amber-soft); color:var(--amber)}
+.tag.warn{background:#F3D6D2; color:var(--danger)}
+button{font:inherit; cursor:pointer; border:0; border-radius:12px; padding:12px 18px; background:var(--teal); color:#fff; font-weight:700}
+button.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--line)}
+button.amber{background:var(--amber)}
+button:focus-visible{outline:3px solid var(--amber); outline-offset:2px}
+button:disabled{opacity:.5; cursor:default}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+label{display:block; font-weight:700; margin:14px 0 4px}
+input[type=range]{width:100%; accent-color:var(--teal)}
+input[type=text]{font:inherit; width:100%; padding:10px; border-radius:10px; border:1.5px solid var(--line); background:var(--card); color:var(--ink)}
+.val{font-weight:700; color:var(--teal)}
+.hidden{display:none !important}
+nav{position:fixed; left:0; right:0; bottom:0; background:var(--card); border-top:1px solid var(--line); padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px)); display:flex; gap:6px; justify-content:space-between}
+nav button{background:none; color:var(--muted); padding:10px 6px; border-radius:10px; font-size:.9rem; flex:1}
+nav button.on{color:var(--teal); background:var(--teal-soft)}
+.home-item{display:block; width:100%; text-align:left; background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin:10px 0; font-weight:400}
+.home-item b{display:block; font-size:1.1rem; margin-bottom:2px}
+.home-item .small{color:var(--muted)}
+.study{border-left:4px solid var(--teal); padding:8px 12px; background:var(--teal-soft); border-radius:8px; margin:12px 0; font-size:.95rem}
+.study.exp{border-color:var(--amber); background:var(--amber-soft)}
+.goal{font-weight:700; margin:10px 0}
+.ring-wrap{display:grid; place-items:center; padding:24px 0 8px}
+.ring{width:210px; height:210px; border-radius:50%; background:var(--teal); opacity:.92; transform:scale(.62); transition:transform 4s ease-in-out; display:grid; place-items:center; color:#fff; font-weight:700; font-size:1.3rem}
+.ring.in{transform:scale(1)}
+@media (prefers-reduced-motion: reduce){ .ring{transition:none} }
+.arena{position:relative; height:300px; border-radius:14px; background:var(--card); border:1px solid var(--line); overflow:hidden; touch-action:none; user-select:none; -webkit-user-select:none}
+.target{position:absolute; width:64px; height:64px; border-radius:50%; display:grid; place-items:center; font-weight:700; color:#fff; font-size:1.1rem}
+.t-go{background:var(--teal)} .t-no{background:var(--danger)}
+.stat{display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed var(--line)} .stat:last-child{border:0}
+.choice{display:block; width:100%; text-align:left; background:var(--card); color:var(--ink); border:1.5px solid var(--line); margin:8px 0; font-weight:400}
+.choice.good{border-color:var(--teal); background:var(--teal-soft)} .choice.bad{border-color:var(--danger)}
+.dot{position:absolute; width:26px; height:26px; border-radius:50%; background:var(--amber); transform:translate(-50%,-50%)}
+.pulsebar{height:10px; border-radius:6px; background:var(--line); overflow:hidden; margin:8px 0} .pulsebar div{height:100%; width:0; background:var(--amber); transition:width .2s}
+.delta{font-size:2.2rem; font-weight:700; line-height:1}
+.notice{border-left:4px solid var(--amber); padding:8px 12px; background:var(--amber-soft); border-radius:8px; margin:12px 0}
+canvas{width:100%; display:block}
+.shape{position:absolute; width:76px; height:76px; display:grid; place-items:center; color:#fff; font-weight:700; font-size:.85rem; text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.big{font-size:1.5rem; font-weight:700; text-align:center; margin:10px 0}
+.pad{width:100%; height:120px; border-radius:14px; background:var(--teal); color:#fff; font-size:1.2rem}
+.pad.amber{background:var(--amber)}
+.face{display:block; margin:0 auto}
+.stripes{height:220px; border-radius:14px; background:repeating-linear-gradient(90deg,#111 0 8px,#eee 8px 16px); background-size:32px 100%; animation:slide 1.2s linear infinite}
+@keyframes slide{from{background-position:0 0}to{background-position:32px 0}}
+@media (prefers-reduced-motion: reduce){ .stripes{animation:none} }
+.cycle{display:flex; justify-content:space-between; margin-top:22px}
+</style>
+</head>
+<body>
+<main>
+
+<section id="v-home">
+  <h1>Anchor</h1>
+  <p class="muted">Twenty games. Each one is built on a published finding about depersonalization and derealization. Tap one, read the study, play the game. The working assumption of this app: the mechanisms that produce DPDR are known well enough that they can be trained against. Some of that is proven, some is a bet.</p>
+  <div id="home-list"></div>
+  <div class="notice small">Ratings are asked only before and after a game, never during. Symptom-checking keeps DPDR going, so the app won't do it for you. And one honest line: CBT with a therapist is the only intervention with clinical trial results. This is a training ground, not a replacement.</div>
+</section>
+
+<section id="v-game" class="hidden">
+  <p><span id="g-tag" class="tag"></span></p>
+  <h1 id="g-title"></h1>
+  <div class="study" id="g-study"></div>
+  <p class="goal" id="g-goal"></p>
+  <p class="small muted" id="g-how"></p>
+  <div id="g-body"></div>
+  <div class="cycle"><button class="ghost" id="b-prev">← Previous</button><button class="ghost" id="b-next">Next →</button></div>
+</section>
+
+<section id="v-log" class="hidden">
+  <h1>Log</h1>
+  <p class="muted small">Before and after ratings, all games. Amber is before, teal is after. The point is that the number moves. Most people who say it's constant find it isn't.</p>
+  <div class="card"><canvas id="chart" width="600" height="240" style="height:120px"></canvas><p id="log-empty" class="muted small">No sessions yet.</p></div>
+  <div class="card" id="log-stats"></div>
+  <div class="row"><button class="ghost" id="b-clear">Clear log</button></div>
+</section>
+</main>
+
+<nav>
+  <button data-v="home">Home</button>
+  <button data-v="log">Log</button>
+</nav>
+
+<script>
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let cleanup=null, cur=0, AC=null;
+function audio(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC}catch(e){return null}}
+document.addEventListener('pointerdown',()=>{const c=audio();if(c){const b=c.createBuffer(1,1,22050),s=c.createBufferSource();s.buffer=b;s.connect(c.destination);s.start()}},{once:true});
+function tone(freq,dur,vol,type){const c=audio();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type=type||'sine';o.frequency.value=freq;g.gain.setValueAtTime(vol||.15,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+dur);o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+dur)}
+function noise(dur,vol,lp){const c=audio();if(!c)return;const b=c.createBuffer(1,c.sampleRate*dur,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const s=c.createBufferSource();s.buffer=b;const f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=lp||400;const g=c.createGain();g.gain.setValueAtTime(vol||.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+dur);s.connect(f).connect(g).connect(c.destination);s.start()}
+function timers(){const T={s:new Set(),after(ms,fn){const id=setTimeout(()=>{T.s.delete(id);fn()},ms);T.s.add(id);return id},every(ms,fn){const id=setInterval(fn,ms);T.s.add(id);return id},clear(){T.s.forEach(id=>{clearTimeout(id);clearInterval(id)});T.s.clear()}};return T}
+function logSession(game,pre,post,extra){const l=store.get('log',[]);l.push({at:Date.now(),game,pre,post,...(extra||{})});store.set('log',l)}
+function el(html){const t=document.createElement('template');t.innerHTML=html.trim();return t.content.firstChild}
+function bindRanges(root){root.querySelectorAll('input[type=range][data-out]').forEach(i=>{const o=root.querySelector('#'+i.dataset.out);if(!o)return;o.textContent=i.value;i.oninput=()=>o.textContent=i.value})}
+function result(root,sel,big,text){const r=root.querySelector(sel);r.classList.remove('hidden');r.innerHTML=`<div class="delta">${big}</div><p class="small">${text}</p>`}
+function soundCheck(root){const d=el(`<div class="row small" style="margin:6px 0 10px"><button class="ghost" style="padding:8px 12px">Test sound</button><span class="muted">Uses sound. iPhone: flip the silent switch off.</span></div>`);d.querySelector('button').onclick=()=>{audio();tone(660,.25,.2)};root.appendChild(d)}
+function countdown(root,sel,secs,T,onEnd){let t=secs;const e=root.querySelector(sel);e.textContent=t+' s';T.every(1000,()=>{t--;e.textContent=t+' s';if(t<=0){T.clear();onEnd()}})}
+function prePost(root,gameKey,startLabel,onStart,afterHtml){
+  root.appendChild(el(`<div class="pp-pre"><label>Before you start, how unreal or detached do you feel? <span class="val" id="pp-o1">5</span> / 10</label><input type="range" min="0" max="10" value="5" id="pp-i1" data-out="pp-o1"><div class="row" style="margin-top:12px"><button id="pp-start">${startLabel}</button></div></div>`));
+  root.appendChild(el(`<div class="pp-post hidden"><div id="pp-after">${afterHtml||''}</div><label>And now: <span class="val" id="pp-o2">5</span> / 10</label><input type="range" min="0" max="10" value="5" id="pp-i2" data-out="pp-o2"><div class="row" style="margin-top:12px"><button id="pp-save">Save session</button><button class="ghost" id="pp-again">Again</button></div><div class="card hidden" id="pp-res"></div></div>`));
+  bindRanges(root);
+  const pre=root.querySelector('.pp-pre'),post=root.querySelector('.pp-post');
+  root.querySelector('#pp-start').onclick=()=>{pre.classList.add('hidden');onStart()};
+  root.querySelector('#pp-again').onclick=()=>{post.classList.add('hidden');pre.classList.remove('hidden');root.querySelector('#pp-res').classList.add('hidden')};
+  let extra={};
+  root.querySelector('#pp-save').onclick=()=>{const a=+root.querySelector('#pp-i1').value,b=+root.querySelector('#pp-i2').value;logSession(gameKey,a,b,extra);const d=b-a;result(root,'#pp-res',(d>0?'+':'')+d,d<0?'It moved down. One round is one data point. Ten rounds is a pattern.':d===0?'No change this round. That happens. Check the Log after a week.':'It went up. Common when you watch yourself instead of the task. Try Breathe next.')};
+  return {finish(x){extra=x||{};root.querySelector('#pp-i2').value=root.querySelector('#pp-i1').value;root.querySelector('#pp-o2').textContent=root.querySelector('#pp-i1').value;post.classList.remove('hidden')}};
+}
+const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
+const shuffle=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
+const mean=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+
+const GAMES=[
+
+/* 1 ENGAGE */
+{key:'engage',title:'Engage',tag:'Published mechanism',exp:false,
+ blurb:'Fast outward attention. Tap green, never red.',
+ study:'Hunter, Salkovskis and David (2014), Behaviour Research and Therapy. People with DPDR did a demanding, stressful cognitive task. Their depersonalization went down afterwards. Healthy controls and anxiety patients went up. The interpretation: DPDR is fed by attention turned inward on the symptom, and a task that forces attention outward starves it.',
+ goal:'Goal: hold attention outside your own head for 60 seconds, hard enough that there is no room for symptom-watching.',
+ how:'Tap green targets as fast as you can. Never tap red. It speeds up when you are good and slows when you miss.',
+ build(root){
+  const T=timers();
+  root.appendChild(el(`<div id="eg" class="hidden"><div class="row" style="justify-content:space-between;margin:8px 0"><span>Time <b id="e-time">60 s</b></span><span>Hits <b id="e-hits">0</b></span><span>Errors <b id="e-miss">0</b></span></div><div class="arena" id="arena"></div></div>`));
+  const pp=prePost(root,'engage','Start 60 seconds',start,'<div class="card"><div class="stat"><span>Average reaction</span><b id="e-rt">–</b></div><div class="stat"><span>Hits</span><b id="e-h2">–</b></div><div class="stat"><span>Wrong taps</span><b id="e-w">–</b></div><div class="stat"><span>Top level</span><b id="e-l">–</b></div></div>');
+  let g=null;
+  function start(){root.querySelector('#eg').classList.remove('hidden');g={hits:0,miss:0,wrong:0,rts:[],lvl:1,live:false};countdown(root,'#e-time',60,T,end);spawn()}
+  function spawn(){const a=root.querySelector('#arena');a.innerHTML='';if(!g)return;const go=Math.random()<.72;const t=el(`<div class="target ${go?'t-go':'t-no'}">${go?'tap':'no'}</div>`);t.style.left=Math.random()*(a.clientWidth-64)+'px';t.style.top=Math.random()*(a.clientHeight-64)+'px';a.appendChild(t);const at=performance.now();g.live=true;
+    const win=Math.max(420,1400-g.lvl*110);g.sp=T.after(win,()=>{if(!g||!g.live)return;g.live=false;if(go){g.miss++;g.lvl=Math.max(1,g.lvl-1)}else g.lvl++;root.querySelector('#e-miss').textContent=g.miss+g.wrong;spawn()});
+    t.onpointerdown=e=>{e.preventDefault();if(!g||!g.live)return;g.live=false;clearTimeout(g.sp);if(go){g.hits++;g.rts.push(performance.now()-at);g.lvl++;root.querySelector('#e-hits').textContent=g.hits}else{g.wrong++;g.lvl=Math.max(1,g.lvl-2);root.querySelector('#e-miss').textContent=g.miss+g.wrong}T.after(120,spawn)}}
+  function end(){if(!g)return;T.clear();root.querySelector('#arena').innerHTML='';root.querySelector('#eg').classList.add('hidden');const rt=Math.round(mean(g.rts));root.querySelector('#e-rt').textContent=rt?rt+' ms':'–';root.querySelector('#e-h2').textContent=g.hits;root.querySelector('#e-w').textContent=g.wrong;root.querySelector('#e-l').textContent=g.lvl;pp.finish({rt,hits:g.hits});g=null}
+  return ()=>{T.clear();g=null}}},
+
+/* 2 BREATHE */
+{key:'breathe',title:'Breathe',tag:'Published mechanism',exp:false,
+ blurb:'Eyes open. Breathe through the sounds.',
+ study:'Michal et al. (2013), PLoS ONE. Patients with DPDR listened to emotionally arousing sounds while doing mindful breathing. State depersonalization dropped immediately (d = 0.65), they felt more grounded, and their skin conductance started responding to the sounds again. Their bodies had been flat to emotion; breathing while the sounds played switched the response back on.',
+ goal:'Goal: keep attention on the breath while arousing sounds arrive, so the body learns to respond to them instead of shutting down.',
+ how:'Breathe with the ring. Every third breath a sound plays: siren, thunder, alarm, heartbeat, chime, glass, crying. Do not brace for it and do not chase it. Notice whatever your body does, and keep breathing. The sounds are synthesized stand-ins for the affective sound library used in the study.',
+ build(root){
+  const T=timers();soundCheck(root);
+  root.appendChild(el(`<div><div class="ring-wrap"><div class="ring" id="ring">tap start</div></div><p id="cue" style="text-align:center;min-height:1.5em;font-weight:700"></p><div class="row" style="justify-content:center"><button id="b-bs">Start 3 minutes</button><button class="ghost hidden" id="b-bx">Stop</button></div></div>`));
+  const SOUNDS=[
+    ['siren',()=>{const c=audio();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type='sawtooth';g.gain.value=.08;o.connect(g).connect(c.destination);const t=c.currentTime;for(let i=0;i<4;i++){o.frequency.setValueAtTime(600,t+i*.8);o.frequency.linearRampToValueAtTime(1100,t+i*.8+.4);o.frequency.linearRampToValueAtTime(600,t+i*.8+.8)}g.gain.setValueAtTime(.08,t+3.1);g.gain.linearRampToValueAtTime(0,t+3.4);o.start();o.stop(t+3.4)}],
+    ['thunder',()=>{noise(2.5,.5,250);T.after(600,()=>noise(1.5,.3,150))}],
+    ['alarm',()=>{for(let i=0;i<6;i++)T.after(i*250,()=>tone(1400,.15,.12,'square'))}],
+    ['heartbeat',()=>{for(let i=0;i<5;i++){T.after(i*900,()=>tone(55,.18,.5,'sine'));T.after(i*900+220,()=>tone(45,.22,.4,'sine'))}}],
+    ['chime',()=>{[880,1108,1318].forEach((f,i)=>T.after(i*180,()=>tone(f,1.6,.1)))}],
+    ['glass breaking',()=>{noise(.15,.6,6000);T.after(100,()=>noise(.6,.3,3000));[2400,3100,4200].forEach((f,i)=>T.after(i*60,()=>tone(f,.4,.06,'triangle')))}],
+    ['crying',()=>{const c=audio();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type='triangle';g.gain.value=0;o.connect(g).connect(c.destination);const t=c.currentTime;for(let i=0;i<3;i++){o.frequency.setValueAtTime(420,t+i*1.1);o.frequency.exponentialRampToValueAtTime(260,t+i*1.1+.9);g.gain.setValueAtTime(.001,t+i*1.1);g.gain.exponentialRampToValueAtTime(.12,t+i*1.1+.15);g.gain.exponentialRampToValueAtTime(.001,t+i*1.1+1)}o.start();o.stop(t+3.4)}]];
+  let n=-1,on=false;const ring=root.querySelector('#ring');
+  function cycle(){if(!on)return;ring.classList.add('in');ring.textContent='in';root.querySelector('#cue').textContent='';n++;
+    if(n%3===2){const s=pick(SOUNDS);T.after(1500,()=>{s[1]();root.querySelector('#cue').textContent='('+s[0]+') keep breathing'})}
+    T.after(4000,()=>{ring.classList.remove('in');ring.textContent='out'});T.after(10000,cycle)}
+  function stop(){if(!on)return;on=false;T.clear();ring.classList.remove('in');ring.textContent='done';root.querySelector('#cue').textContent='Eyes stayed open. Sounds came and went. So did you.';root.querySelector('#b-bs').classList.remove('hidden');root.querySelector('#b-bx').classList.add('hidden')}
+  root.querySelector('#b-bs').onclick=()=>{audio();root.querySelector('#b-bs').classList.add('hidden');root.querySelector('#b-bx').classList.remove('hidden');on=true;n=-1;cycle();T.after(180000,stop)};
+  root.querySelector('#b-bx').onclick=stop;return ()=>{on=false;T.clear()}}},
+
+/* 3 REFRAME */
+{key:'reframe',title:'Reframe',tag:'Published mechanism',exp:false,
+ blurb:'Pick the explanation that is true and not terrifying.',
+ study:'Hunter et al. (2014) also showed that people with DPDR, given ordinary bodily sensations, generate catastrophic explanations ("I am going mad", "my brain is damaged") far more than controls do. In the CBT model, that explanation is the engine: it produces fear, fear produces more detachment, detachment gets explained catastrophically again.',
+ goal:'Goal: make the normalising explanation the automatic one, by picking it under time pressure, over and over.',
+ how:'Read the sensation. Pick the reading you would actually go with. There is always one that is both true and calm.',
+ build(root){
+  const RF=[['My hands look like they belong to someone else.',['My brain is broken and this is permanent.','I stared at my hands. Anyone who stares at their hands for 30 seconds gets this.','I am losing my mind.'],1,'Hyper-attention to any body part makes it look strange. It is a normal perceptual effect, amplified by fear.'],
+  ['I feel like I am watching myself from outside.',['I am dissociating and will never come back.','My nervous system is running a detachment response. Uncomfortable, and reversible.','Something is wrong with reality.'],1,'Detachment is a normal stress response. Trauma clinicians see it every day. The catastrophic label is what makes it chronic.'],
+  ['The world looks flat and fake, like a screen.',['I am on the edge of psychosis.','I know it is not a screen. Feelings about reality are not reports about reality.','I have permanently damaged my perception.'],1,'People with DPDR keep full insight. Knowing it feels fake but is not is the opposite of psychosis.'],
+  ['I cannot feel anything for people I love.',['I have become a psychopath.','Emotional numbing is part of the same loop. In the 2013 study responses came back within minutes.','My relationships are over.'],1,'Emotional blunting is a listed DPDR symptom and lifts as the fear does. It is not a character change.'],
+  ['My thoughts do not feel like mine.',['I am going insane.','I am monitoring my thinking so closely it feels foreign. Observing a thought is not the same as having it.','Someone else is thinking for me.'],1,'Self-monitoring splits the thinker from the thought. Ease the monitoring and the split closes.'],
+  ['My voice sounds strange when I talk.',['I am not really the one talking.','I am listening to myself as I speak, which nobody normally does. Recorded voices sound strange for the same reason.','I am fading out.'],1,'Attending to your own voice mid-sentence produces the same weirdness in anyone. It is attention, not identity.'],
+  ['Time feels like it is not passing normally.',['My brain clock is broken.','Anxiety and inward focus distort time perception in everyone. This is measurable and it moves.','Reality is glitching.'],1,'Time perception is one of the most stress-sensitive things we have. A 2024 study found DPDR shifts it, and it is trainable.'],
+  ['I cannot picture faces or places in my head anymore.',['My imagination is gone for good.','Imagery feels dim because I keep checking it. Lambert (2001) tested DPDR patients and their imagery worked fine.','My memory is being erased.'],1,'Patients reported broken imagery and then passed every imagery test. The felt loss and the actual ability came apart.']];
+  root.appendChild(el(`<div class="card"><p id="rf-s" style="font-weight:700;font-size:1.15rem"></p><div id="rf-c"></div><p id="rf-e" class="small hidden"></p><div class="row"><button id="rf-n" class="hidden">Next</button></div></div>`));
+  let i=Math.floor(Math.random()*RF.length);
+  function show(){const [s,ch,g,ex]=RF[i%RF.length];root.querySelector('#rf-s').textContent=s;root.querySelector('#rf-e').classList.add('hidden');root.querySelector('#rf-n').classList.add('hidden');const c=root.querySelector('#rf-c');c.innerHTML='';ch.forEach((t,j)=>{const b=el(`<button class="choice">${t}</button>`);b.onclick=()=>{[...c.children].forEach((x,k)=>x.classList.add(k===g?'good':'bad'));root.querySelector('#rf-e').textContent=ex;root.querySelector('#rf-e').classList.remove('hidden');root.querySelector('#rf-n').classList.remove('hidden')};c.appendChild(b)})}
+  root.querySelector('#rf-n').onclick=()=>{i++;show()};show();return null}},
+
+/* 4 GROUND */
+{key:'ground',title:'Ground',tag:'Standard in CBT for DPDR',exp:false,
+ blurb:'5-4-3-2-1 through the senses.',
+ study:'Grounding strategies are a named component of Hunter\'s CBT protocol for DPDR (2005; 2023 cross-over trial), used "to increase a sense of connection and present moment awareness". The 5-4-3-2-1 routine is the standard version.',
+ goal:'Goal: two minutes of attention out in the senses, not in on how you feel.',
+ how:'Type what you notice. Details count: the scratch on the table, not "table".',
+ build(root){
+  const GR=[[5,'see','Five things you can see. Details count.'],[4,'touch','Four things you can feel. Actually press on them.'],[3,'hear','Three sounds. Wait for a quiet one.'],[2,'smell','Two smells. Go find them.'],[1,'taste','One taste. Or take a sip of something.']];
+  root.appendChild(el(`<div class="card"><h2 id="gr-t"></h2><p class="muted small" id="gr-s"></p><div id="gr-i"></div><div class="row" style="margin-top:10px"><button id="gr-n">Next</button></div></div>`));
+  let i=0;function show(){const[n,s,sub]=GR[i];root.querySelector('#gr-t').textContent=`${n} things you can ${s}`;root.querySelector('#gr-s').textContent=sub;root.querySelector('#gr-i').innerHTML=Array.from({length:n},(_,k)=>`<input type="text" placeholder="${k+1}" style="margin:6px 0">`).join('');root.querySelector('#gr-n').textContent=i===4?'Finish':'Next'}
+  root.querySelector('#gr-n').onclick=()=>{if(i<4){i++;show()}else{i=0;root.querySelector('#gr-t').textContent='Done';root.querySelector('#gr-s').textContent='Two minutes outside your head. That is the whole technique.';root.querySelector('#gr-i').innerHTML='';root.querySelector('#gr-n').textContent='Again'}};show();return null}},
+
+/* 5 ATTENTION SWITCH */
+{key:'att',title:'Attention switch',tag:'Experimental (adapted from ATT)',exp:true,
+ blurb:'Three sounds. Follow the one you are told to. Click on every pulse.',
+ study:'Wells\' Attention Training Technique (1990; meta-analysed 2019) trains people to steer attention between competing sounds on command. It reduces self-focused attention and helps in anxiety and health anxiety. Hunter\'s DPDR model names self-focused attention as a maintaining factor. ATT has not been tested in DPDR, but the mechanism it targets is exactly the one the model blames.',
+ goal:'Goal: get good at moving attention out of yourself and onto a chosen external thing, holding it there, then switching.',
+ how:'Preview the three sounds first. Then Begin: three pulses play at once and the screen tells you which to follow. Tap the big clicker every time you hear that one. Every 15 seconds the target switches. 90 seconds. Score is clicks matched to real pulses of the target.',
+ build(root){
+  const T=timers();soundCheck(root);
+  const F={low:[110,'square',.14,'Low'],mid:[440,'triangle',.09,'Middle'],high:[1320,'sine',.07,'High']};
+  root.appendChild(el(`<div><div class="row" style="margin-bottom:8px"><button class="ghost" id="at-pl">Hear low</button><button class="ghost" id="at-pm">Hear middle</button><button class="ghost" id="at-ph">Hear high</button></div><div class="row" style="justify-content:space-between"><span class="small muted" id="at-t"></span><span class="small" id="at-sc"></span></div><div class="big" id="at-ins">Tap begin</div><button class="pad hidden" id="at-c">I heard it</button><div class="row" style="margin-top:10px"><button id="at-s">Begin 90 seconds</button></div><div class="card hidden" id="at-r"></div></div>`));
+  root.querySelector('#at-pl').onclick=()=>{audio();tone(...F.low.slice(0,1),.4,F.low[2],F.low[1])};root.querySelector('#at-pm').onclick=()=>{audio();tone(F.mid[0],.4,F.mid[2],F.mid[1])};root.querySelector('#at-ph').onclick=()=>{audio();tone(F.high[0],.4,F.high[2],F.high[1])};
+  let run=false,focus=null,pulses=[],clicks=[],segs=[];
+  function stream(k,period,jit){function tick(){if(!run)return;tone(F[k][0],.12,F[k][2],F[k][1]);pulses.push({k,t:performance.now()});T.after(period+Math.random()*jit,tick)}T.after(600+Math.random()*600,tick)}
+  root.querySelector('#at-c').onpointerdown=e=>{e.preventDefault();if(run)clicks.push({k:focus,t:performance.now()})};
+  root.querySelector('#at-s').onclick=()=>{if(run)return;audio();run=true;pulses=[];clicks=[];segs=[];root.querySelector('#at-r').classList.add('hidden');root.querySelector('#at-s').classList.add('hidden');root.querySelector('#at-c').classList.remove('hidden');
+    stream('low',1300,500);stream('mid',900,600);stream('high',1700,700);countdown(root,'#at-t',90,T,fin);
+    const plan=shuffle(['low','mid','high']).concat(shuffle(['low','mid','high']));let i=0;function seg(){if(!run||i>=plan.length)return;focus=plan[i];segs.push({k:focus,t:performance.now()});root.querySelector('#at-ins').textContent=`Follow the ${F[focus][3].toLowerCase()} sound`;root.querySelector('#at-c').textContent=`I heard the ${F[focus][3].toLowerCase()} one`;i++;T.after(15000,seg)}seg()};
+  function fin(){run=false;T.clear();root.querySelector('#at-c').classList.add('hidden');root.querySelector('#at-s').classList.remove('hidden');root.querySelector('#at-s').textContent='Begin again';root.querySelector('#at-ins').textContent='Done';
+    let hit=0,tgt=0,extra=0;const focusAt=t=>{let f=null;segs.forEach(s=>{if(s.t<=t)f=s.k});return f};
+    const targets=pulses.filter(p=>focusAt(p.t)===p.k);tgt=targets.length;const used=new Set();clicks.forEach(c=>{const m=targets.findIndex((p,i)=>!used.has(i)&&c.t-p.t>0&&c.t-p.t<700);if(m>=0){used.add(m);hit++}else extra++});
+    const pct=tgt?Math.round(100*hit/tgt):0;result(root,'#at-r',pct+'%',`Caught ${hit} of ${tgt} target pulses, with ${extra} clicks on the wrong sound or off-beat. Above 80% means attention stayed where you put it through the switches.`);logSession('att',null,null,{pct,extra})}
+  return ()=>{run=false;T.clear()}}},
+
+/* 6 PULSE */
+{key:'pulse',title:'Pulse sync',tag:'Experimental',exp:true,
+ blurb:'Tap on your own heartbeat. Get steady.',
+ study:'Sedeño et al. (2014), PLoS ONE. A DPDR patient scored far below controls on heartbeat detection, and the brain regions that integrate body signals (insula) were disconnected. Separately, a 2025 preprint trained heartbeat detection in healthy adults and found emotional awareness and body image improved. Interoceptive training as a DPDR treatment has not been tested.',
+ goal:'Goal: re-learn to feel the beat from the inside, using your fingers as a scaffold first, then without them.',
+ how:'Level 1: two fingers on your wrist or neck, tap the button on every beat for 20 seconds. Level 2: same, no fingers. The app scores steadiness. When Level 2 gets close to Level 1, the scaffold has done its job.',
+ build(root){
+  const T=timers();
+  root.appendChild(el(`<div><div class="row"><button class="ghost" id="p-l1">Level 1: fingers on</button><button class="ghost" id="p-l2">Level 2: fingers off</button></div><div class="pulsebar"><div id="pf"></div></div><div class="row"><button class="amber" id="b-p">Tap on each beat</button><span id="po" class="small"></span></div><p class="small muted" style="margin-top:10px">Steadiness under 0.08 is very steady; over 0.15 means you probably lost the beat.</p></div>`));
+  let pl=null,lvl=1;root.querySelector('#p-l1').onclick=()=>{lvl=1;root.querySelector('#po').textContent='Level 1 selected'};root.querySelector('#p-l2').onclick=()=>{lvl=2;root.querySelector('#po').textContent='Level 2 selected'};
+  root.querySelector('#b-p').onpointerdown=e=>{e.preventDefault();if(!pl){pl={taps:[],start:performance.now()};root.querySelector('#po').textContent='go';T.after(20000,fin);T.every(200,()=>{root.querySelector('#pf').style.width=((performance.now()-pl.start)/200)+'%'})}pl.taps.push(performance.now())};
+  function fin(){T.clear();const t=pl.taps;pl=null;root.querySelector('#pf').style.width='0';if(t.length<6){root.querySelector('#po').textContent='Too few taps to score.';return}const iv=t.slice(1).map((x,i)=>x-t[i]);const m=mean(iv);const sd=Math.sqrt(mean(iv.map(x=>(x-m)**2)));const cv=sd/m,bpm=Math.round(60000/m);root.querySelector('#po').textContent=`Level ${lvl}: ~${bpm} bpm, steadiness ${cv<.08?'high':cv<.15?'medium':'low'} (${cv.toFixed(2)})`;logSession('pulse',null,null,{lvl,bpm,cv})}
+  return ()=>{T.clear();pl=null}}},
+
+/* 7 OWNERSHIP DRIFT */
+{key:'mirror',title:'Ownership drift',tag:'Experimental',exp:true,
+ blurb:'A dot that is you, then is not, then is again.',
+ study:'Rubber-hand and virtual-body experiments (Botvinick & Cohen 1998; Slater and others) show that a body part you see moving in sync with what you feel gets adopted as yours, and one that lags gets rejected. Farmer et al. found people high in depersonalization do not show the normal self bias when integrating touch and vision. Predictive-coding accounts (Gatus et al. 2022) argue DPDR is this integration failing. Nobody has tried training it.',
+ goal:'Goal: feel the difference between a body signal that is yours and one that is not, then practise snapping back to "mine" on demand.',
+ how:'Keep your finger inside the big ring as it drifts. The orange dot is your finger, shown with a lag the game controls. Three blocks: in sync, lagged, in sync again. After each, rate how much the dot felt like you.',
+ build(root){
+  const T=timers();
+  root.appendChild(el(`<div><div class="big" id="od-msg">Tap start</div><div class="arena" id="od-a" style="height:280px"><div id="od-ring" style="position:absolute;width:96px;height:96px;border:4px solid var(--teal);border-radius:50%;transform:translate(-50%,-50%);left:50%;top:50%;pointer-events:none"></div><div class="dot" id="od-dot" style="left:50%;top:50%;pointer-events:none"></div></div><div class="row" style="margin-top:10px"><button id="od-s">Start</button></div><div id="od-rate" class="hidden"><label>Did that dot feel like you? <span class="val" id="od-o">3</span> / 5</label><input type="range" min="1" max="5" value="3" id="od-i" data-out="od-o"><div class="row" style="margin-top:8px"><button id="od-ok">Continue</button></div></div><div class="card hidden" id="od-res"></div></div>`));
+  bindRanges(root);
+  const a=root.querySelector('#od-a'),dot=root.querySelector('#od-dot'),ring=root.querySelector('#od-ring');let pts=[],lag=0,run=false,raf,onTrack=0,total=0,blocks=[{lag:0,n:'in sync'},{lag:700,n:'lagged by 0.7 s'},{lag:0,n:'back in sync'}],bi=0,scores=[],t0=0;
+  function push(e){const r=a.getBoundingClientRect();pts.push({x:e.clientX-r.left,y:e.clientY-r.top,t:performance.now()});if(pts.length>600)pts.shift()}
+  a.addEventListener('pointerdown',e=>{e.preventDefault();push(e)});a.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'&&!e.buttons)return;push(e)});
+  function loop(){const now=performance.now();let p=null;for(let i=pts.length-1;i>=0;i--){if(pts[i].t<=now-lag){p=pts[i];break}}if(p){dot.style.left=p.x+'px';dot.style.top=p.y+'px'}
+    if(run){const s=(now-t0)/1000;const cx=a.clientWidth/2+Math.sin(s*.8)*(a.clientWidth*.32),cy=a.clientHeight/2+Math.cos(s*.6)*(a.clientHeight*.3);ring.style.left=cx+'px';ring.style.top=cy+'px';if(pts.length){const q=pts[pts.length-1];total++;if(Math.hypot(q.x-cx,q.y-cy)<52)onTrack++}}raf=requestAnimationFrame(loop)}
+  loop();
+  function startBlock(){const b=blocks[bi];lag=b.lag;run=true;t0=performance.now();onTrack=0;total=0;root.querySelector('#od-msg').textContent=`Block ${bi+1} of 3: stay in the ring`;root.querySelector('#od-s').classList.add('hidden');T.after(15000,()=>{run=false;root.querySelector('#od-msg').textContent=`That block was ${b.n}`;root.querySelector('#od-rate').classList.remove('hidden')})}
+  root.querySelector('#od-s').onclick=()=>{bi=0;scores=[];root.querySelector('#od-res').classList.add('hidden');startBlock()};
+  root.querySelector('#od-ok').onclick=()=>{scores.push({lag:blocks[bi].lag,own:+root.querySelector('#od-i').value,acc:total?onTrack/total:0});root.querySelector('#od-rate').classList.add('hidden');bi++;if(bi<blocks.length)startBlock();else{const gain=((scores[0].own+scores[2].own)/2-scores[1].own).toFixed(1);root.querySelector('#od-msg').textContent='Done';root.querySelector('#od-s').classList.remove('hidden');root.querySelector('#od-s').textContent='Run again';result(root,'#od-res',(gain>0?'+':'')+gain,`Ownership gain: how much more "me" the synced dot felt than the lagged one. A healthy system shows a clear gap. Near zero means sync did not register as you. Run it daily and watch the gain grow. Tracking accuracy: ${scores.map(s=>Math.round(s.acc*100)+'%').join(' / ')}.`);logSession('mirror',null,null,{gain:+gain})}};
+  return ()=>{cancelAnimationFrame(raf);T.clear()}}},
+
+/* 8 PREDICTION BREAKER */
+{key:'predict',title:'Prediction breaker',tag:'Experimental',exp:true,
+ blurb:'One shape at a time. Tap only the real match. Twenty colours want to trip you.',
+ study:'Gatus, Jamieson and Stevenson (2022), Frontiers in Human Neuroscience, propose that DPDR is a predictive-coding failure: the brain over-weights its own predictions and under-weights incoming sensory evidence, so the world reads as a rehearsal rather than the real thing. The training idea, untested, is to force repeated wins for sensory evidence over expectation.',
+ goal:'Goal: react to what is actually on screen, not to what you expected or what the label claims.',
+ how:'The instruction names a basic colour and a shape. Shapes appear one at a time in twenty colours, including near-misses like lime, teal, crimson and navy. Tap only when it really is that colour and that shape. Ignore the printed word; it lies. 45 seconds.',
+ build(root){
+  const T=timers();
+  const BASIC={green:'#2E8B57',red:'#C0392B',blue:'#2E63C4',yellow:'#E8C400',purple:'#7A3FA0',orange:'#E07B1A',black:'#111111',grey:'#8A8F94',pink:'#E75480',brown:'#7B4A2D'};
+  const NEAR={lime:'#9ACD32',teal:'#1C8A85',navy:'#1B2A6B',sky:'#6FB6E8',crimson:'#8E1B3A',magenta:'#C5169B',maroon:'#5A0F1F',olive:'#6B7A1E',gold:'#B8901A',tan:'#C9A87A',silver:'#C4C8CC',charcoal:'#3A3F44',indigo:'#4B2F8F',coral:'#F07A5A',turquoise:'#2EC4B6',salmon:'#F0A08A',lavender:'#B39DDB',mint:'#8FD3B6',rust:'#B34A1E',plum:'#6E2C6B'};
+  const ALL=Object.assign({},BASIC,NEAR);const BK=Object.keys(BASIC),AK=Object.keys(ALL);
+  const SH={circle:'circle(50%)',square:'inset(6%)',triangle:'polygon(50% 4%,96% 96%,4% 96%)',diamond:'polygon(50% 0,100% 50%,50% 100%,0 50%)',hexagon:'polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0 50%)',star:'polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)',pentagon:'polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%)',cross:'polygon(35% 0,65% 0,65% 35%,100% 35%,100% 65%,65% 65%,65% 100%,35% 100%,35% 65%,0 65%,0 35%,35% 35%)',arrow:'polygon(0 35%,60% 35%,60% 10%,100% 50%,60% 90%,60% 65%,0 65%)',octagon:'polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%)',trapezoid:'polygon(20% 10%,80% 10%,100% 90%,0 90%)',oval:'ellipse(50% 32% at 50% 50%)',crescent:'polygon(50% 0,90% 15%,100% 50%,90% 85%,50% 100%,60% 85%,65% 50%,60% 15%)',chevron:'polygon(0 20%,50% 60%,100% 20%,100% 50%,50% 90%,0 50%)',bolt:'polygon(55% 0,25% 55%,48% 55%,40% 100%,75% 40%,52% 40%)'};
+  const SK=Object.keys(SH);
+  root.appendChild(el(`<div><div class="row" style="justify-content:space-between"><span class="small muted" id="pb-t"></span><span class="small" id="pb-o"></span></div><div class="big" id="pb-ins">Tap start</div><div class="arena" id="pb-a" style="height:300px"></div><div class="row" style="margin-top:10px"><button class="amber" id="pb-s">Start 45 seconds</button></div><div class="card hidden" id="pb-r"></div></div>`));
+  let pb=null;
+  function newTarget(){pb.tc=pick(BK);pb.ts=pick(SK);root.querySelector('#pb-ins').textContent=`Tap only the ${pb.tc} ${pb.ts}`}
+  function spawn(){if(!pb)return;const a=root.querySelector('#pb-a');a.innerHTML='';pb.n++;if(pb.n%8===0)newTarget();
+    const r=Math.random();let c,s;if(r<.38){c=pb.tc;s=pb.ts}else if(r<.58){c=pb.tc;s=pick(SK.filter(x=>x!==pb.ts))}else if(r<.8){c=pick(AK.filter(x=>x!==pb.tc));s=pb.ts}else{c=pick(AK.filter(x=>x!==pb.tc));s=pick(SK.filter(x=>x!==pb.ts))}
+    const ok=c===pb.tc&&s===pb.ts;const d=el(`<div class="shape"></div>`);d.style.width='100px';d.style.height='100px';d.style.background=ALL[c];d.style.clipPath=SH[s];d.style.color=(c==='yellow'||c==='silver'||c==='mint'||c==='tan'||c==='sky'||c==='lavender')?'#222':'#fff';d.textContent=Math.random()<.45?pick(AK.filter(x=>x!==c)):c;d.style.left=Math.random()*(a.clientWidth-100)+'px';d.style.top=Math.random()*(a.clientHeight-100)+'px';
+    let done=false;d.onpointerdown=e=>{e.preventDefault();if(!pb||done)return;done=true;if(ok){pb.score++;pb.lvl++}else{pb.fooled++;pb.lvl=Math.max(1,pb.lvl-1)}root.querySelector('#pb-o').textContent=`${pb.score} right · ${pb.fooled} fooled · ${pb.missed} missed`;T.after(150,spawn)};a.appendChild(d);
+    T.after(Math.max(700,1700-pb.lvl*90),()=>{if(!pb||done)return;done=true;if(ok){pb.missed++;root.querySelector('#pb-o').textContent=`${pb.score} right · ${pb.fooled} fooled · ${pb.missed} missed`}spawn()})}
+  root.querySelector('#pb-s').onclick=()=>{if(pb)return;pb={score:0,fooled:0,missed:0,lvl:1,n:-1};newTarget();root.querySelector('#pb-r').classList.add('hidden');root.querySelector('#pb-s').classList.add('hidden');root.querySelector('#pb-o').textContent='0 right · 0 fooled · 0 missed';countdown(root,'#pb-t',45,T,end);spawn()};
+  function end(){if(!pb)return;T.clear();root.querySelector('#pb-a').innerHTML='';root.querySelector('#pb-ins').textContent='Done';root.querySelector('#pb-s').classList.remove('hidden');root.querySelector('#pb-s').textContent='Start again';result(root,'#pb-r',pb.score,`${pb.fooled} fooled, ${pb.missed} missed. Fooled taps are the interesting number: each one is a prediction winning over the evidence.`);logSession('predict',null,null,{score:pb.score,fooled:pb.fooled,missed:pb.missed});pb=null}
+  return ()=>{T.clear();pb=null}}},
+
+/* 9 AGENCY */
+{key:'agency',title:'Agency clock',tag:'Experimental',exp:true,
+ blurb:'Press, see the flash, judge the gap.',
+ study:'Ciaunica and colleagues (2024), Scientific Reports, ran the intentional-binding task on people with frequent depersonalization. When you cause an outcome, the delay between your action and the outcome feels shorter than when you merely observe it. That compression is an implicit marker of feeling like the author of your actions. The high-DP group showed unusual time distortions on short intervals.',
+ goal:'Goal: rebuild the felt link between "I did that" and "that happened".',
+ how:'Two kinds of trial, alternating. Active: you tap the pad, and after a hidden gap the screen flashes and beeps. You guess the gap between your tap and the flash. Passive: the screen flashes twice on its own. You guess the gap between the two flashes. Ten trials. Binding score is how much shorter gaps felt when you caused them.',
+ build(root){
+  const T=timers();soundCheck(root);
+  root.appendChild(el(`<div><div class="row" style="justify-content:space-between"><span class="small muted" id="ag-n"></span><span class="tag" id="ag-c"></span></div><div class="big" id="ag-msg">Tap start</div><div id="ag-flash" style="height:110px;border-radius:14px;background:var(--line);transition:background .05s"></div><button class="pad hidden" id="ag-pad" style="margin-top:10px">tap when ready</button><div class="hidden" id="ag-est"><label id="ag-q">Gap: <span class="val" id="ag-o">700</span> ms</label><input type="range" min="200" max="1500" step="50" value="700" id="ag-i" data-out="ag-o"><div class="row"><button id="ag-ok">Lock in this guess</button></div></div><div class="row" style="margin-top:10px"><button id="ag-s">Start 10 trials</button></div><div class="card hidden" id="ag-res"></div></div>`));
+  bindRanges(root);let trial=0,res=[],cond=null,delay=0;
+  const flash=()=>{const f=root.querySelector('#ag-flash');f.style.background='var(--amber)';tone(880,.1,.2);T.after(120,()=>f.style.background='var(--line)')};
+  const ask=q=>{root.querySelector('#ag-q').innerHTML=q+': <span class="val" id="ag-o">700</span> ms';root.querySelector('#ag-i').value=700;bindRanges(root);root.querySelector('#ag-est').classList.remove('hidden')};
+  function next(){if(trial>=10)return fin();cond=trial%2?'passive':'active';delay=pick([400,600,800,1000,1200]);root.querySelector('#ag-est').classList.add('hidden');root.querySelector('#ag-n').textContent=`Trial ${trial+1} of 10`;root.querySelector('#ag-c').textContent=cond==='active'?'Active: you cause it':'Passive: just watch';
+    if(cond==='active'){root.querySelector('#ag-msg').textContent='Tap the pad. A flash will follow.';root.querySelector('#ag-pad').classList.remove('hidden');root.querySelector('#ag-pad').onclick=()=>{root.querySelector('#ag-pad').classList.add('hidden');root.querySelector('#ag-msg').textContent='…';T.after(delay,()=>{flash();root.querySelector('#ag-msg').textContent='How long from your tap to the flash?';ask('Tap to flash')})}}
+    else{root.querySelector('#ag-msg').textContent='Watch. Two flashes are coming.';T.after(1000,()=>{flash();T.after(delay,()=>{flash();root.querySelector('#ag-msg').textContent='How long between the two flashes?';ask('Flash to flash')})})}}
+  root.querySelector('#ag-ok').onclick=()=>{res.push({cond,delay,est:+root.querySelector('#ag-i').value});trial++;root.querySelector('#ag-est').classList.add('hidden');root.querySelector('#ag-msg').textContent=`Actual gap was ${delay} ms`;T.after(1200,next)};
+  root.querySelector('#ag-s').onclick=()=>{audio();trial=0;res=[];root.querySelector('#ag-res').classList.add('hidden');root.querySelector('#ag-s').classList.add('hidden');next()};
+  function fin(){root.querySelector('#ag-pad').classList.add('hidden');root.querySelector('#ag-s').classList.remove('hidden');root.querySelector('#ag-s').textContent='Run again';const m=c=>mean(res.filter(x=>x.cond===c).map(x=>x.est-x.delay));const bind=Math.round(m('passive')-m('active'));root.querySelector('#ag-msg').textContent='Done';root.querySelector('#ag-n').textContent='';root.querySelector('#ag-c').textContent='';result(root,'#ag-res',(bind>0?'+':'')+bind+' ms',`Binding: how much shorter gaps felt when you caused them versus watched them. Positive is the healthy pattern (typically 50 to 150 ms). Near zero or negative means your actions are not being stamped as yours in time. The feedback after each guess is the training part.`);logSession('agency',null,null,{bind})}
+  return ()=>T.clear()}},
+
+/* 10 SELF FIRST */
+{key:'self',title:'Self first',tag:'Experimental',exp:true,
+ blurb:'Three shapes. One of them is you. Be fast for it.',
+ study:'Liu et al. (2022), Brain Sciences. Healthy people recognise their own face faster than a famous face even when it is shown too briefly to see consciously. DPDR patients had lost that advantage: self got no priority. This uses Sui and Humphreys\' shape-label version of the same effect, where a random shape assigned to "you" gets processed faster within minutes. Whether drilling it restores self-priority is untested.',
+ goal:'Goal: rebuild the brain\'s fast lane for "this is me".',
+ how:'Each session assigns new shapes to you, a friend and a stranger. Learn them, then each trial shows a shape with a label. Tap Match or Mismatch fast. 30 trials.',
+ build(root){
+  const T=timers();const POOL=['●','■','▲','◆','★','⬟','✚','◐'];let sym={};
+  root.appendChild(el(`<div><div class="row" style="justify-content:center;gap:24px;margin:8px 0;font-size:1.2rem" id="sf-key"></div><span class="small muted" id="sf-n"></span><div class="big" id="sf-st" style="min-height:5rem">Tap start</div><div class="row" style="justify-content:center"><button class="ghost hidden" id="sf-m" style="flex:1;padding:18px">Match</button><button class="ghost hidden" id="sf-x" style="flex:1;padding:18px">Mismatch</button></div><div class="row" style="margin-top:12px"><button id="sf-s">Start 30 trials</button></div><div class="card hidden" id="sf-r"></div></div>`));
+  const keys=['you','friend','stranger'];let t=0,res=[],td=null,at=0;
+  function assign(){const s=shuffle(POOL);sym={you:s[0],friend:s[1],stranger:s[2]};root.querySelector('#sf-key').innerHTML=keys.map(k=>`<span><b>${sym[k]}</b> ${k}</span>`).join('')}
+  assign();
+  function next(){if(t>=30)return fin();const shape=pick(keys);const match=Math.random()<.5;const label=match?shape:pick(keys.filter(k=>k!==shape));td={shape,label,match};root.querySelector('#sf-n').textContent=`Trial ${t+1} of 30`;root.querySelector('#sf-st').textContent='';at=0;T.after(350,()=>{root.querySelector('#sf-st').innerHTML=`<span style="font-size:2.6rem">${sym[shape]}</span><br>${label}`;at=performance.now()})}
+  function ans(m){if(!td||!at)return;const ok=m===td.match;res.push({shape:td.shape,rt:performance.now()-at,ok});root.querySelector('#sf-st').innerHTML=`<span style="color:${ok?'var(--teal)':'var(--danger)'}">${ok?'right':'wrong'}</span>`;at=0;t++;T.after(350,next)}
+  root.querySelector('#sf-m').onpointerdown=e=>{e.preventDefault();ans(true)};root.querySelector('#sf-x').onpointerdown=e=>{e.preventDefault();ans(false)};
+  root.querySelector('#sf-s').onclick=()=>{assign();t=0;res=[];root.querySelector('#sf-r').classList.add('hidden');root.querySelector('#sf-s').classList.add('hidden');root.querySelector('#sf-m').classList.remove('hidden');root.querySelector('#sf-x').classList.remove('hidden');let c=4;root.querySelector('#sf-st').textContent=`Learn the key above. ${c}`;T.every(1000,()=>{c--;if(c>0)root.querySelector('#sf-st').textContent=`Learn the key above. ${c}`;else{T.clear();next()}})};
+  function fin(){root.querySelector('#sf-m').classList.add('hidden');root.querySelector('#sf-x').classList.add('hidden');root.querySelector('#sf-s').classList.remove('hidden');root.querySelector('#sf-s').textContent='New session';root.querySelector('#sf-st').textContent='Done';root.querySelector('#sf-n').textContent='';const m=k=>mean(res.filter(x=>x.shape===k&&x.ok).map(x=>x.rt));const adv=Math.round((m('friend')+m('stranger'))/2-m('you'));result(root,'#sf-r',(adv>0?'+':'')+adv+' ms',`Self-advantage: how much faster you were when the shape was you. Healthy adults show a clear positive number within minutes of learning the pairing. Accuracy ${Math.round(100*res.filter(x=>x.ok).length/res.length)}%.`);logSession('self',null,null,{adv})}
+  return ()=>T.clear()}},
+
+/* 11 FACE READ */
+{key:'face',title:'Face read',tag:'Experimental',exp:true,
+ blurb:'Read the feeling before the face is gone.',
+ study:'Lemche et al. (2007), NeuroReport. DPDR patients showed the reverse of the normal brain pattern to emotional faces: as expressions got more intense, their amygdala response went down, and prefrontal dampening regions went up. EEG work found the face-processing signal barely distinguishes emotional from neutral faces in high-DP people. Speeded emotional-face training exists for other conditions. It has never been aimed at DPDR.',
+ goal:'Goal: get the emotional read to happen fast, before the dampening circuit can switch it off.',
+ how:'A face flashes for a fraction of a second, then a mask. Tap what it showed. Correct answers shorten the flash, down to 50 ms.',
+ build(root){
+  const T=timers();
+  root.appendChild(el(`<div><svg class="face" id="fc" width="180" height="180" viewBox="0 0 100 100"></svg><div class="row" id="fc-b" style="justify-content:center"></div><div class="row" style="margin-top:12px"><button id="fc-s">Start 20 faces</button><span class="small" id="fc-o"></span></div></div>`));
+  const EMO=['happy','sad','angry','afraid','neutral'];const svg=root.querySelector('#fc');
+  function draw(e,k){const c={happy:`M30 62 Q50 ${62+22*k} 70 62`,sad:`M30 ${66+8*k} Q50 ${66-14*k} 70 ${66+8*k}`,angry:`M32 66 L68 66`,afraid:`M40 60 Q50 ${60+26*k} 60 60 Q50 ${60+16*k} 40 60`,neutral:`M34 64 L66 64`}[e];const b={happy:`M25 36 Q35 ${34-4*k} 45 36 M55 36 Q65 ${34-4*k} 75 36`,sad:`M25 ${38-6*k} Q35 ${34+2*k} 45 40 M55 40 Q65 ${34+2*k} 75 ${38-6*k}`,angry:`M25 30 Q35 ${34+8*k} 45 ${40+2*k} M55 ${40+2*k} Q65 ${34+8*k} 75 30`,afraid:`M25 ${36-8*k} Q35 ${28-6*k} 45 ${34-4*k} M55 ${34-4*k} Q65 ${28-6*k} 75 ${36-8*k}`,neutral:`M25 36 L45 36 M55 36 L75 36`}[e];const ey=e==='afraid'?4+3*k:4;svg.innerHTML=`<circle cx="50" cy="50" r="46" fill="#E9C9A8" stroke="#8C6A4E" stroke-width="2"/><circle cx="35" cy="45" r="${ey}" fill="#222"/><circle cx="65" cy="45" r="${ey}" fill="#222"/><path d="${b}" stroke="#222" stroke-width="3" fill="none" stroke-linecap="round"/><path d="${c}" stroke="#222" stroke-width="3" fill="none" stroke-linecap="round"/>`}
+  function mask(){let s='';for(let i=0;i<40;i++)s+=`<rect x="${Math.random()*90}" y="${Math.random()*90}" width="${6+Math.random()*12}" height="${6+Math.random()*12}" fill="${pick(['#222','#888','#ccc','#E9C9A8'])}"/>`;svg.innerHTML=`<circle cx="50" cy="50" r="46" fill="#D8DAD8"/>${s}`}
+  function blank(){svg.innerHTML=`<circle cx="50" cy="50" r="46" fill="#D8DAD8"/>`}
+  blank();let n=0,ok=0,dur=300,curE=null;const bb=root.querySelector('#fc-b');
+  function trial(){if(n>=20){root.querySelector('#fc-o').textContent=`${ok}/20, final flash ${dur} ms`;bb.innerHTML='';blank();root.querySelector('#fc-s').classList.remove('hidden');logSession('face',null,null,{ok,dur});return}curE=pick(EMO);const inten=.5+Math.random()*.5;bb.innerHTML='';blank();T.after(500,()=>{draw(curE,inten);T.after(dur,()=>{mask();EMO.forEach(e=>{const b=el(`<button class="ghost">${e}</button>`);b.onclick=()=>{n++;if(e===curE){ok++;dur=Math.max(50,dur-30)}else dur=Math.min(600,dur+40);root.querySelector('#fc-o').textContent=`${n}/20, flash ${dur} ms`;trial()};bb.appendChild(b)})})})}
+  root.querySelector('#fc-s').onclick=()=>{n=0;ok=0;dur=300;root.querySelector('#fc-o').textContent='';root.querySelector('#fc-s').classList.add('hidden');trial()};return ()=>T.clear()}},
+
+/* 12 EXPOSURE */
+{key:'exposure',title:'Exposure',tag:'Experimental. Read the warning.',exp:true,
+ blurb:'Bring it on deliberately. Let it pass.',
+ study:'Lickel, Nelson, Lickel and Deacon (2008), Cognitive and Behavioral Practice. In panic patients with depersonalization, therapists induced the feeling on purpose (3D glasses, dot staring) so patients could sit with it and habituate. It faded fast within sessions and panic dropped. Dockery (2014) replicated habituation across three weekly sessions. Tested in panic, not in primary DPDR.',
+ goal:'Goal: learn in your body that the feeling arrives, peaks, and leaves, and that you survive it every time.',
+ how:'Stare at the drifting stripes for 60 seconds without looking away. Expect it to get weird. Then stop and keep breathing while it passes. No strobe is used. Skip this if you are already very distressed, or have epilepsy or migraine with aura.',
+ build(root){
+  const T=timers();
+  root.appendChild(el(`<div><span class="tag warn">Induces the feeling on purpose</span><div id="ex-g" class="hidden"><div class="stripes" id="ex-st"></div><p class="big" id="ex-t">60 s</p></div></div>`));
+  const pp=prePost(root,'exposure','Start 60 seconds',start,'<div class="card small">Now keep your eyes in the room and breathe slowly. Rate again once it has settled, not at the peak.</div>');
+  function start(){root.querySelector('#ex-g').classList.remove('hidden');countdown(root,'#ex-t',60,T,()=>{root.querySelector('#ex-g').classList.add('hidden');pp.finish()})}
+  return ()=>T.clear()}},
+
+/* 13 TRUE VERTICAL */
+{key:'svv',title:'True vertical',tag:'Experimental (from vestibular testing)',exp:true,
+ blurb:'A tilted frame lies about up. Set the dots straight anyway.',
+ study:'Jáuregui-Renaud et al. (2019), Journal of Vestibular Research: people whose subjective visual vertical was asymmetric already reported derealization symptoms before any stimulation, and vestibular stimulation provoked more. Her 2015 review argues DPDR arises when balance and vision disagree about orientation. The rod-and-frame test (Witkin; computerised with dots by Docherty & Bagust 2010) measures how much a tilted visual frame drags your sense of vertical. That drag, called visual dependence, drops with repeated practice in vestibular rehab.',
+ goal:'Goal: trust the body\'s sense of up over a lying visual frame, and shrink the drag it has on you.',
+ how:'Two dots sit inside a tilted frame. Use the slider to rotate the dots until they are truly vertical on the screen, not vertical relative to the frame. Lock in. You see your error. Ten trials, frame tilts vary, some trials have no frame. Score is your error with the frame minus without: your visual dependence.',
+ build(root){
+  const T=timers();
+  root.appendChild(el(`<div><span class="small muted" id="sv-n"></span><div class="arena" id="sv-a" style="height:280px;display:grid;place-items:center;overflow:hidden"><div id="sv-f" style="position:absolute;width:200px;height:200px;border:6px solid var(--muted);transform:rotate(0deg)"></div><div id="sv-r" style="position:absolute;width:0;height:150px;transform:rotate(0deg)"><div style="position:absolute;left:-9px;top:-9px;width:18px;height:18px;border-radius:50%;background:var(--amber)"></div><div style="position:absolute;left:-9px;bottom:-9px;width:18px;height:18px;border-radius:50%;background:var(--amber)"></div></div></div><input type="range" min="-30" max="30" step="0.5" value="0" id="sv-i" style="margin-top:10px"><div class="row"><button id="sv-ok" class="hidden">Lock in</button><button id="sv-s">Start 10 trials</button><span class="small" id="sv-o"></span></div><div class="card hidden" id="sv-r2"></div></div>`));
+  const rod=root.querySelector('#sv-r'),frame=root.querySelector('#sv-f'),sl=root.querySelector('#sv-i');let n=0,res=[],ft=0,off=0;
+  sl.oninput=()=>{rod.style.transform=`rotate(${+sl.value+off}deg)`};
+  function next(){if(n>=10)return fin();const withFrame=n%5!==4;ft=withFrame?pick([-25,-18,18,25]):0;frame.style.display=withFrame?'block':'none';frame.style.transform=`rotate(${ft}deg)`;off=pick([-14,-9,9,14]);sl.value=0;rod.style.transform=`rotate(${off}deg)`;root.querySelector('#sv-n').textContent=`Trial ${n+1} of 10${withFrame?'':' (no frame)'}`;root.querySelector('#sv-o').textContent='';root.querySelector('#sv-ok').classList.remove('hidden')}
+  root.querySelector('#sv-ok').onclick=()=>{const err=+sl.value+off;res.push({ft,err});n++;root.querySelector('#sv-o').textContent=`Off by ${Math.abs(err).toFixed(1)}°${ft?(Math.sign(err)===Math.sign(ft)?', pulled toward the frame':''):''}`;root.querySelector('#sv-ok').classList.add('hidden');rod.style.transform='rotate(0deg)';T.after(1300,next)};
+  root.querySelector('#sv-s').onclick=()=>{n=0;res=[];root.querySelector('#sv-r2').classList.add('hidden');root.querySelector('#sv-s').classList.add('hidden');next()};
+  function fin(){root.querySelector('#sv-s').classList.remove('hidden');root.querySelector('#sv-s').textContent='Run again';root.querySelector('#sv-ok').classList.add('hidden');const wf=mean(res.filter(r=>r.ft).map(r=>Math.abs(r.err))),nf=mean(res.filter(r=>!r.ft).map(r=>Math.abs(r.err)));const dep=(wf-nf).toFixed(1);root.querySelector('#sv-n').textContent='Done';result(root,'#sv-r2',dep+'°',`Visual dependence: error with a tilted frame (${wf.toFixed(1)}°) minus error without (${nf.toFixed(1)}°). Under 2° means the frame barely moves you. Over 5° means vision is overruling your body\'s sense of up. It falls with practice.`);logSession('svv',null,null,{dep:+dep,wf,nf})}
+  return ()=>T.clear()}},
+
+/* 14 FLOW ANCHOR */
+{key:'flow',title:'Flow anchor',tag:'Experimental',exp:true,
+ blurb:'The screen rushes at you. Stay put and spot the gap.',
+ study:'D\'Amour et al. (2021) found that the stronger people feel illusory self-motion from a moving visual field (vection), the higher they score on depersonalization. Caloric stimulation of the inner ear and vestibular disease both produce DPDR symptoms in people who never had them (Jáuregui-Renaud 2015; Sang et al. 2006). This game pushes an optic-flow field at you and asks you to keep doing a precise visual task through it.',
+ goal:'Goal: stay anchored and accurate while your visual system insists you are moving.',
+ how:'A field of dots expands toward you. Every few seconds a wedge of the field goes dark for a moment. Tap the quadrant (top-left, top-right, bottom-left, bottom-right) where the gap was. 40 seconds. Stop if you feel sick.',
+ build(root){
+  const T=timers();
+  root.appendChild(el(`<div><div class="row" style="justify-content:space-between"><span class="small muted" id="fl-t"></span><span class="small" id="fl-o"></span></div><canvas id="fl-c" width="600" height="600" style="width:100%;height:auto;border-radius:14px;background:#0f1416;touch-action:none"></canvas><div class="row" style="margin-top:10px"><button id="fl-s">Start 40 seconds</button></div><div class="card hidden" id="fl-r"></div></div>`));
+  const c=root.querySelector('#fl-c'),ctx=c.getContext('2d');let dots=[],run=false,raf,gap=null,gapAt=0,hits=0,tot=0,answered=true;
+  for(let i=0;i<220;i++)dots.push({x:Math.random()*2-1,y:Math.random()*2-1,z:Math.random()});
+  function frame(){ctx.fillStyle='#0f1416';ctx.fillRect(0,0,600,600);const now=performance.now();dots.forEach(d=>{if(run){d.z-=.012;if(d.z<=.05){d.z=1;d.x=Math.random()*2-1;d.y=Math.random()*2-1}}const px=300+d.x/d.z*300,py=300+d.y/d.z*300;if(px<0||px>600||py<0||py>600)return;const q=(px<300?0:1)+(py<300?0:2);if(gap!==null&&q===gap&&now-gapAt<450)return;ctx.fillStyle='#e8ece9';ctx.beginPath();ctx.arc(px,py,Math.max(1,3/d.z*.6),0,7);ctx.fill()});ctx.strokeStyle='#5FB3AA';ctx.lineWidth=3;ctx.strokeRect(290,290,20,20);if(run)raf=requestAnimationFrame(frame)}
+  frame();
+  c.addEventListener('pointerdown',e=>{e.preventDefault();if(!run||answered||gap===null)return;const r=c.getBoundingClientRect();const x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;const q=(x<.5?0:1)+(y<.5?0:2);answered=true;tot++;if(q===gap)hits++;root.querySelector('#fl-o').textContent=`${hits} / ${tot}`});
+  function scheduleGap(){T.after(2500+Math.random()*2000,()=>{if(!run)return;if(!answered)tot++;gap=Math.floor(Math.random()*4);gapAt=performance.now();answered=false;scheduleGap()})}
+  root.querySelector('#fl-s').onclick=()=>{if(run)return;run=true;hits=0;tot=0;answered=true;gap=null;root.querySelector('#fl-r').classList.add('hidden');root.querySelector('#fl-s').classList.add('hidden');root.querySelector('#fl-o').textContent='0 / 0';frame();scheduleGap();countdown(root,'#fl-t',40,T,()=>{run=false;T.clear();root.querySelector('#fl-s').classList.remove('hidden');root.querySelector('#fl-s').textContent='Start again';result(root,'#fl-r',`${hits} / ${tot}`,'Gaps caught while the field rushed at you. The number that matters over sessions is whether you can hold accuracy while the vection gets stronger.');logSession('flow',null,null,{hits,tot})})};
+  return ()=>{run=false;cancelAnimationFrame(raf);T.clear()}}},
+
+/* 15 GAZE HOLD */
+{key:'gaze',title:'Gaze hold',tag:'Experimental (from vestibular rehab)',exp:true,
+ blurb:'Turn your head. Keep your eyes on the dot. Read the letter.',
+ study:'Gaze-stabilisation exercises are the core of vestibular rehabilitation: fix the eyes on a target while the head moves, so the reflex that keeps the world still during head movement gets retrained. Jáuregui-Renaud (2015) links DPDR to exactly the sensory mismatch this reflex is supposed to cancel. Dynamic visual acuity, reading while the head moves, is how clinics measure progress.',
+ goal:'Goal: make the world hold still while you move, by training the reflex that is supposed to do that.',
+ how:'Hold the phone at arm\'s length. When it says GO, turn your head side to side with the beat, about one turn per second, eyes locked on the dot. Every few seconds a letter flashes on the dot, then four big buttons appear. Tap the one you saw. 45 seconds. Stop if you feel sick.',
+ build(root){
+  const T=timers();soundCheck(root);
+  root.appendChild(el(`<div><div class="row" style="justify-content:space-between"><span class="small muted" id="gz-t"></span><span class="small" id="gz-o"></span></div><div class="big" id="gz-m">Tap start</div><div class="arena" id="gz-a" style="height:200px;display:grid;place-items:center"><div id="gz-d" style="width:64px;height:64px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-weight:700;font-size:2rem"></div></div><div class="row" id="gz-b" style="margin-top:10px"></div><div class="row" style="margin-top:10px"><button id="gz-s">Start 45 seconds</button></div><div class="card hidden" id="gz-r"></div></div>`));
+  const L='ACEFHKNPRUVXZ';let run=false,n=0,ok=0,curL=null,waiting=false;const bb=root.querySelector('#gz-b');
+  function showButtons(){bb.innerHTML='';shuffle([curL,...shuffle(L.replace(curL,'').split('')).slice(0,3)]).forEach(ch=>{const b=el(`<button class="ghost" style="flex:1;padding:18px;font-size:1.4rem">${ch}</button>`);b.onpointerdown=e=>{e.preventDefault();if(!waiting)return;waiting=false;n++;if(ch===curL)ok++;root.querySelector('#gz-o').textContent=`${ok} / ${n}`;bb.innerHTML=''};bb.appendChild(b)})}
+  root.querySelector('#gz-s').onclick=()=>{if(run)return;audio();run=true;n=0;ok=0;waiting=false;root.querySelector('#gz-r').classList.add('hidden');root.querySelector('#gz-s').classList.add('hidden');root.querySelector('#gz-o').textContent='0 / 0';let c=3;root.querySelector('#gz-m').textContent='Ready… 3';T.every(1000,function pre(){c--;if(c>0)root.querySelector('#gz-m').textContent='Ready… '+c;else{T.clear();go()}})};
+  function go(){root.querySelector('#gz-m').textContent='GO. Head left, right. Eyes on the dot.';T.every(500,()=>tone(220,.06,.12,'square'));T.every(3200,()=>{if(waiting){n++;bb.innerHTML='';waiting=false}curL=L[Math.floor(Math.random()*L.length)];root.querySelector('#gz-d').textContent=curL;T.after(200,()=>{root.querySelector('#gz-d').textContent='';waiting=true;showButtons()})});countdown(root,'#gz-t',45,T,()=>{run=false;T.clear();bb.innerHTML='';root.querySelector('#gz-d').textContent='';root.querySelector('#gz-m').textContent='Done';root.querySelector('#gz-s').classList.remove('hidden');root.querySelector('#gz-s').textContent='Start again';result(root,'#gz-r',`${ok} / ${n}`,'Letters read correctly while the head was moving. Clinics call this dynamic visual acuity. It climbs as the reflex retrains.');logSession('gaze',null,null,{ok,n})})}
+  return ()=>{run=false;T.clear()}}},
+
+/* 16 TIME SENSE */
+{key:'time',title:'Time sense',tag:'Experimental',exp:true,
+ blurb:'Learn the clock, then reproduce it blind.',
+ study:'Ferroni, Arcuri, Ardizzi, Chinchella, Gallese and Ciaunica (2024), Quarterly Journal of Experimental Psychology, "Lost in time and space?" People with frequent depersonalization showed altered time perception alongside altered peripersonal space processing. Time distortion is one of the most common DPDR complaints. Interval training with feedback reliably tightens timing in lab studies; aiming it at DPDR is new.',
+ goal:'Goal: recalibrate your internal clock against the real one, with feedback every time, until blind guesses land.',
+ how:'Two phases per trial. Learn: a bar fills and a tick sounds every half second, so you can see and hear the length. Reproduce: press and hold the pad for that long, no bar. You are told how far off you were. 8 trials.',
+ build(root){
+  const T=timers();soundCheck(root);
+  root.appendChild(el(`<div><div class="row" style="justify-content:space-between"><span class="small muted" id="tm-n"></span><span class="small" id="tm-o"></span></div><div class="big" id="tm-m">Tap start</div><div style="height:26px;border-radius:8px;background:var(--line);overflow:hidden;margin:8px 0"><div id="tm-bar" style="height:100%;width:0;background:var(--amber)"></div></div><button class="pad" id="tm-p" style="user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none">press and hold here</button><div class="card hidden" id="tm-r"></div><div class="row" style="margin-top:10px"><button id="tm-s">Start 8 trials</button></div></div>`));
+  const pad=root.querySelector('#tm-p'),bar=root.querySelector('#tm-bar'),msg=root.querySelector('#tm-m');let n=0,errs=[],target=0,down=0,phase='idle',raf;
+  function next(){if(n>=8){const e=Math.round(mean(errs)),first=Math.round((errs[0]+errs[1])/2),last=Math.round((errs[6]+errs[7])/2);msg.textContent='Done';phase='idle';root.querySelector('#tm-s').classList.remove('hidden');root.querySelector('#tm-s').textContent='Run again';result(root,'#tm-r',e+' ms',`Average error. First two trials ${first} ms, last two ${last} ms. ${last<first?'It tightened within the session. That is the training effect.':'No tightening this session. Calibration builds across days.'}`);logSession('time',null,null,{err:e,first,last});return}
+    target=1000+Math.floor(Math.random()*6)*300;phase='show';root.querySelector('#tm-n').textContent=`Trial ${n+1} of 8`;msg.textContent='Learn this length';pad.style.opacity=.4;const t0=performance.now();
+    for(let t=0;t<target;t+=500)T.after(t,()=>tone(660,.06,.15));
+    (function grow(){const p=Math.min(1,(performance.now()-t0)/target);bar.style.width=p*100+'%';if(p<1)raf=requestAnimationFrame(grow)})();
+    T.after(target+500,()=>{bar.style.width='0';phase='reproduce';pad.style.opacity=1;msg.textContent='Now hold the pad for that long'})}
+  pad.addEventListener('pointerdown',e=>{e.preventDefault();if(phase!=='reproduce')return;down=performance.now();pad.textContent='holding…';tone(440,.05,.1)});
+  const up=e=>{if(phase!=='reproduce'||!down)return;const held=performance.now()-down;const err=held-target;errs.push(Math.abs(err));down=0;phase='fb';n++;pad.textContent='press and hold here';msg.textContent=`${err>0?'Too long':'Too short'} by ${Math.abs(Math.round(err))} ms`;root.querySelector('#tm-o').textContent=`${Math.round(held)} vs ${target} ms`;T.after(1500,next)};
+  pad.addEventListener('pointerup',up);pad.addEventListener('pointercancel',up);
+  root.querySelector('#tm-s').onclick=()=>{audio();n=0;errs=[];root.querySelector('#tm-r').classList.add('hidden');root.querySelector('#tm-s').classList.add('hidden');msg.textContent='Starting…';T.after(600,next)};return ()=>{T.clear();cancelAnimationFrame(raf)}}},
+
+/* 17 HOLD IN MIND */
+{key:'nback',title:'Hold in mind',tag:'Experimental',exp:true,
+ blurb:'Is this the same as two back? Keep the stream in your head.',
+ study:'Guralnik, Schmeidler and Simeon (2000, 2007), American Journal of Psychiatry and Journal of Nervous and Mental Disease, found that people with DPDR score worse than controls on attention, short-term memory and spatial reasoning, and that the deficits track symptom severity. Working-memory training (n-back) is the most studied cognitive-training task there is. It has never been tried on DPDR.',
+ goal:'Goal: rebuild the capacity to hold the present moment in mind, which DPDR erodes.',
+ how:'Shapes appear one at a time. Tap "Same" whenever the shape is the same as the one two steps back. 40 items. Do not tap for anything else.',
+ build(root){
+  const T=timers();const S=['●','■','▲','◆','★','✚'];
+  root.appendChild(el(`<div><span class="small muted" id="nb-n"></span><div class="big" id="nb-s" style="font-size:3rem;min-height:4rem">Tap start</div><div id="nb-fb" style="min-height:2.6rem;border-radius:10px;padding:8px 12px;font-weight:700;text-align:center;background:var(--line);color:var(--muted);margin:6px 0"></div><button class="pad hidden" id="nb-p">Same as two back</button><div class="row" style="margin-top:10px"><button id="nb-b">Start 40 items</button><span class="small" id="nb-o"></span></div><div class="card hidden" id="nb-r"></div></div>`));
+  let seq=[],i=0,hits=0,fa=0,miss=0,pressed=false;
+  const disp=root.querySelector('#nb-s'),fb=root.querySelector('#nb-fb');
+  function flash(kind,text){fb.textContent=text;fb.style.background=kind==='good'?'var(--teal)':kind==='bad'?'var(--danger)':'var(--line)';fb.style.color=kind==='none'?'var(--muted)':'#fff';if(kind!=='none')tone(kind==='good'?880:220,.12,.12,kind==='good'?'sine':'square')}
+  function step(){if(i>=40)return fin();const same=i>=2&&Math.random()<.3;const s=same?seq[i-2]:pick(S.filter(x=>i<2||x!==seq[i-2]));seq.push(s);pressed=false;disp.textContent=s;disp.style.color='var(--ink)';root.querySelector('#nb-n').textContent=`${i+1} of 40`;T.after(1600,()=>{if(same&&!pressed){miss++;flash('bad','MISSED. That one was the same as two back.')}else if(!same&&!pressed)flash('none','');disp.textContent='';i++;T.after(500,step)})}
+  root.querySelector('#nb-p').onpointerdown=e=>{e.preventDefault();if(pressed||i>=seq.length)return;pressed=true;if(i>=2&&seq[i]===seq[i-2]){hits++;disp.style.color='var(--teal)';flash('good','RIGHT. Same as two back.')}else{fa++;disp.style.color='var(--danger)';flash('bad','WRONG. Not the same as two back.')}root.querySelector('#nb-o').textContent=`${hits} hits · ${fa} false alarms · ${miss} missed`};
+  root.querySelector('#nb-b').onclick=()=>{audio();seq=[];i=0;hits=0;fa=0;miss=0;fb.textContent='';fb.style.background='var(--line)';root.querySelector('#nb-r').classList.add('hidden');root.querySelector('#nb-b').classList.add('hidden');root.querySelector('#nb-p').classList.remove('hidden');root.querySelector('#nb-o').textContent='';step()};
+  function fin(){root.querySelector('#nb-p').classList.add('hidden');root.querySelector('#nb-b').classList.remove('hidden');root.querySelector('#nb-b').textContent='Run again';root.querySelector('#nb-s').textContent='Done';const tgt=hits+miss;result(root,'#nb-r',`${hits} / ${tgt}`,`Matches caught, with ${fa} false alarms. Above 80% with few false alarms means move to 3-back next version.`);logSession('nback',null,null,{hits,tgt,fa})}
+  return ()=>T.clear()}},
+
+/* 18 INK NOT WORD */
+{key:'stroop',title:'Ink not word',tag:'Experimental',exp:true,
+ blurb:'The word says one colour. The ink is another. Answer the ink.',
+ study:'Lemche et al. (2016), Psychiatry Research: Neuroimaging, ran a Stroop and negative-priming task on DPDR patients and found altered prefrontal activity during inhibition: the circuit that suppresses a dominant response was working differently, consistent with the over-controlled, emotion-dampening profile seen elsewhere. Stroop practice is a standard inhibition-training task.',
+ goal:'Goal: train fast, flexible inhibition so the dampening circuit is a tool you control, not a default you are stuck in.',
+ how:'A colour word appears in a colour of ink. Tap the ink colour, never the word. 30 items, adaptive speed.',
+ build(root){
+  const T=timers();const C={red:'#C0392B',green:'#2E8B57',blue:'#2E63C4',yellow:'#E8C400',purple:'#7A3FA0'};const K=Object.keys(C);
+  root.appendChild(el(`<div><span class="small muted" id="st-n"></span><div class="big" id="st-w" style="font-size:3rem;min-height:4rem">Tap start</div><div class="row" id="st-b"></div><div class="row" style="margin-top:10px"><button id="st-s">Start 30 items</button><span class="small" id="st-o"></span></div><div class="card hidden" id="st-r"></div></div>`));
+  const bb=root.querySelector('#st-b');let i=0,ok=0,rts=[],ink=null,at=0,lim=2000;
+  function buttons(){bb.innerHTML='';shuffle(K).forEach(k=>{const b=el(`<button style="flex:1;padding:16px 4px;background:${C[k]};color:#fff">${k}</button>`);b.onpointerdown=e=>{e.preventDefault();ans(k)};bb.appendChild(b)})}
+  function item(){if(i>=30)return fin();ink=pick(K);const word=Math.random()<.7?pick(K.filter(k=>k!==ink)):ink;root.querySelector('#st-w').textContent=word;root.querySelector('#st-w').style.color=C[ink];root.querySelector('#st-n').textContent=`${i+1} of 30`;at=performance.now();T.after(lim,()=>{if(at)ans(null)})}
+  function ans(k){if(!at)return;const rt=performance.now()-at;at=0;T.clear();if(k===ink){ok++;rts.push(rt);lim=Math.max(900,lim-60)}else lim=Math.min(2500,lim+80);root.querySelector('#st-o').textContent=`${ok} right`;i++;root.querySelector('#st-w').textContent='';T.after(300,item)}
+  root.querySelector('#st-s').onclick=()=>{i=0;ok=0;rts=[];lim=2000;root.querySelector('#st-r').classList.add('hidden');root.querySelector('#st-s').classList.add('hidden');buttons();item()};
+  function fin(){bb.innerHTML='';root.querySelector('#st-s').classList.remove('hidden');root.querySelector('#st-s').textContent='Run again';root.querySelector('#st-w').textContent='Done';result(root,'#st-r',`${ok} / 30`,`Average correct reaction ${Math.round(mean(rts))} ms. The interference cost, how much slower you are when word and ink disagree, is what shrinks with training.`);logSession('stroop',null,null,{ok,rt:Math.round(mean(rts))})}
+  return ()=>T.clear()}},
+
+/* 19 IMAGERY REBUILD */
+{key:'imagery',title:'Imagery rebuild',tag:'Experimental',exp:true,
+ blurb:'See it for three seconds. Rebuild it from your mind.',
+ study:'Lambert et al. (2001), Psychopathology, "Visual imagery and depersonalisation": DPDR patients reported that their mental imagery had gone dim or absent, yet on objective imagery and perception tests they performed normally. The felt loss and the actual ability had come apart. Practising imagery with proof that it works targets the felt loss directly.',
+ goal:'Goal: use your imagery, get evidence it works, and let the felt loss lose its grip.',
+ how:'A grid shows four coloured tiles for three seconds. It clears. Hold the picture in your mind, then tap the four cells where they were. Grows to five and six tiles as you succeed.',
+ build(root){
+  const T=timers();
+  root.appendChild(el(`<div><span class="small muted" id="im-n"></span><div class="big" id="im-m">Tap start</div><div id="im-g" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-width:320px;margin:0 auto"></div><div class="row" style="margin-top:10px"><button id="im-s">Start 8 rounds</button><span class="small" id="im-o"></span></div><div class="card hidden" id="im-r"></div></div>`));
+  const g=root.querySelector('#im-g');let cells=[],targets=[],picked=[],round=0,k=4,scores=[],phase='idle';
+  for(let i=0;i<25;i++){const d=el(`<div style="aspect-ratio:1;border-radius:8px;background:var(--line)"></div>`);d.onpointerdown=e=>{e.preventDefault();if(phase!=='recall'||picked.includes(i))return;picked.push(i);d.style.background='var(--amber)';if(picked.length===targets.length)check()};g.appendChild(d);cells.push(d)}
+  function reset(){cells.forEach(c=>c.style.background='var(--line)')}
+  function show(){if(round>=8)return fin();reset();picked=[];targets=shuffle([...Array(25).keys()]).slice(0,k);targets.forEach(i=>cells[i].style.background='var(--teal)');phase='show';root.querySelector('#im-n').textContent=`Round ${round+1} of 8 · ${k} tiles`;root.querySelector('#im-m').textContent='Look';T.after(3000,()=>{reset();phase='recall';root.querySelector('#im-m').textContent='Now rebuild it'})}
+  function check(){phase='fb';const hit=picked.filter(i=>targets.includes(i)).length;scores.push(hit/k);targets.forEach(i=>{if(!picked.includes(i))cells[i].style.background='var(--danger)'});root.querySelector('#im-m').textContent=`${hit} of ${k} right`;root.querySelector('#im-o').textContent='';if(hit===k&&k<6)k++;else if(hit<k-1&&k>3)k--;round++;T.after(1400,show)}
+  root.querySelector('#im-s').onclick=()=>{round=0;k=4;scores=[];root.querySelector('#im-r').classList.add('hidden');root.querySelector('#im-s').classList.add('hidden');show()};
+  function fin(){phase='idle';reset();root.querySelector('#im-s').classList.remove('hidden');root.querySelector('#im-s').textContent='Run again';root.querySelector('#im-m').textContent='Done';result(root,'#im-r',Math.round(100*mean(scores))+'%',`Tiles rebuilt from memory. You reached ${k} tiles. If it felt like you could not picture anything and you still scored above chance, that is the Lambert finding happening in your own hands.`);logSession('imagery',null,null,{pct:Math.round(100*mean(scores)),k})}
+  return ()=>T.clear()}},
+
+/* 20 AROUSAL SPIKE */
+{key:'arousal',title:'Arousal spike',tag:'Experimental. A trial that failed.',exp:true,
+ blurb:'Push arousal up on purpose. See if numbness moves.',
+ study:'Schoenberg, Sierra and David (2012), Journal of Trauma & Dissociation. DPDR patients have low skin conductance and flat responses to emotion. The team ran a randomised biofeedback trial to push arousal up, expecting numbness to ease. In healthy volunteers it worked. In patients it did not replicate: arousal tended to fall. This game keeps the same bet with a different lever, fast mental effort under a siren, and measures your own before and after. Included because a failed trial still tells you where the wall is.',
+ goal:'Goal: a short, sharp burst of arousal, then check whether the numb, distant feeling shifted at all.',
+ how:'30 seconds of rapid arithmetic against the clock with an alarm underneath. Type answers fast. Rate before and after.',
+ build(root){
+  const T=timers();soundCheck(root);
+  root.appendChild(el(`<div id="ar-g" class="hidden"><div class="row" style="justify-content:space-between"><span class="small muted" id="ar-t"></span><span class="small" id="ar-o"></span></div><div class="big" id="ar-q"></div><div class="row" id="ar-b"></div></div>`));
+  const pp=prePost(root,'arousal','Start 30 seconds',start,'<div class="card small">Notice: heart rate, heat, breath. That was your body responding. Rate once it settles.</div>');
+  let ok=0,n=0,ans=0;
+  function q(){const a=Math.floor(Math.random()*40)+10,b=Math.floor(Math.random()*30)+5,op=Math.random()<.5?'+':'-';ans=op==='+'?a+b:a-b;root.querySelector('#ar-q').textContent=`${a} ${op} ${b} = ?`;const opts=shuffle([ans,ans+pick([-3,-2,-1,1,2,3]),ans+pick([-10,10,-7,7]),ans+pick([-4,4,-5,5])]);const bb=root.querySelector('#ar-b');bb.innerHTML='';opts.forEach(v=>{const b=el(`<button class="ghost" style="flex:1;padding:16px 4px;font-size:1.2rem">${v}</button>`);b.onpointerdown=e=>{e.preventDefault();n++;if(v===ans)ok++;root.querySelector('#ar-o').textContent=`${ok} / ${n}`;q()};bb.appendChild(b)})}
+  function start(){root.querySelector('#ar-g').classList.remove('hidden');ok=0;n=0;audio();T.every(700,()=>tone(1200,.12,.08,'square'));q();countdown(root,'#ar-t',30,T,()=>{root.querySelector('#ar-g').classList.add('hidden');pp.finish({ok,n})})}
+  return ()=>T.clear()}}
+];
+
+/* ROUTING */
+function home(){$('v-home').classList.remove('hidden');$('v-game').classList.add('hidden');$('v-log').classList.add('hidden');nav('home');const l=$('home-list');l.innerHTML='';GAMES.forEach((g,i)=>{const b=el(`<button class="home-item"><span class="tag ${g.exp?'exp':''}">${g.tag}</span><b>${g.title}</b><span class="small">${g.blurb}</span></button>`);b.onclick=()=>open(i);l.appendChild(b)});window.scrollTo(0,0)}
+function open(i){if(cleanup){try{cleanup()}catch(e){}cleanup=null}cur=i;const g=GAMES[i];$('v-home').classList.add('hidden');$('v-log').classList.add('hidden');$('v-game').classList.remove('hidden');nav(null);$('g-tag').textContent=g.tag;$('g-tag').className='tag '+(g.exp?'exp':'');$('g-title').textContent=g.title;$('g-study').textContent=g.study;$('g-study').className='study '+(g.exp?'exp':'');$('g-goal').textContent=g.goal;$('g-how').textContent=g.how;const body=$('g-body');body.innerHTML='';cleanup=g.build(body);$('b-prev').textContent='← '+GAMES[(i+GAMES.length-1)%GAMES.length].title;$('b-next').textContent=GAMES[(i+1)%GAMES.length].title+' →';window.scrollTo(0,0)}
+$('b-prev').onclick=()=>open((cur+GAMES.length-1)%GAMES.length);$('b-next').onclick=()=>open((cur+1)%GAMES.length);
+function nav(v){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v))}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{if(cleanup){try{cleanup()}catch(e){}cleanup=null}if(b.dataset.v==='home')home();else showLog()});
+function showLog(){$('v-home').classList.add('hidden');$('v-game').classList.add('hidden');$('v-log').classList.remove('hidden');nav('log');drawChart()}
+$('b-clear').onclick=()=>{store.set('log',[]);drawChart()};
+function drawChart(){const all=store.get('log',[]);const log=all.filter(s=>s.pre!=null);const c=$('chart'),ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);$('log-empty').classList.toggle('hidden',log.length>0);
+  const st=$('log-stats');const by={};all.forEach(s=>{by[s.game]=(by[s.game]||0)+1});st.innerHTML=Object.keys(by).length?Object.entries(by).map(([k,v])=>`<div class="stat"><span>${(GAMES.find(g=>g.key===k)||{title:k}).title}</span><b>${v} session${v>1?'s':''}</b></div>`).join(''):'<p class="muted small">Play anything and it shows up here.</p>';
+  if(!log.length)return;const cs=getComputedStyle(document.documentElement);const teal=cs.getPropertyValue('--teal').trim(),amber=cs.getPropertyValue('--amber').trim(),line=cs.getPropertyValue('--line').trim();const W=c.width,H=c.height,p=24,n=log.length;const x=i=>p+(n===1?W/2-p:(W-2*p)*i/(n-1)),y=v=>H-p-(H-2*p)*v/10;ctx.strokeStyle=line;ctx.lineWidth=1;[0,5,10].forEach(v=>{ctx.beginPath();ctx.moveTo(p,y(v));ctx.lineTo(W-p,y(v));ctx.stroke()});
+  const draw=(k,col)=>{ctx.strokeStyle=col;ctx.lineWidth=3;ctx.beginPath();log.forEach((s,i)=>i?ctx.lineTo(x(i),y(s[k])):ctx.moveTo(x(i),y(s[k])));ctx.stroke();ctx.fillStyle=col;log.forEach((s,i)=>{ctx.beginPath();ctx.arc(x(i),y(s[k]),5,0,7);ctx.fill()})};draw('pre',amber);draw('post',teal)}
+home();
+</script>
+</body>
+</html>
