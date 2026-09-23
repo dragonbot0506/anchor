@@ -6,8 +6,24 @@ const config: CapacitorConfig = {
   webDir: 'www',
   ios: {
     contentInset: 'never',
-    backgroundColor: '#E8ECE9',
+    backgroundColor: '#F6F0E8',
     preferredContentMode: 'mobile',
+    allowsLinkPreview: false,
+  },
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 0,
+      launchAutoHide: true,
+      backgroundColor: '#F6F0E8',
+      showSpinner: false,
+    },
+    Keyboard: {
+      resize: 'native',
+      resizeOnFullScreen: true,
+    },
+    StatusBar: {
+      style: 'DEFAULT',
+    },
   },
 };
 
