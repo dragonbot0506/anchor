@@ -5,26 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Anchor — DPDR training games</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#E8ECE9; --card:#FBFCFB; --ink:#1B2430; --muted:#5A6672; --line:#CDD5D0;
-  --amber:#C8791A; --teal:#2E6F6A; --teal-soft:#D7E7E4; --amber-soft:#F5E3CB; --danger:#9B3B2E;
+  --bg:#F4ECE2; --card:#FCF8F2; --ink:#2B1F16; --muted:#7A6657; --line:#E3D5C4;
+  --amber:#C99A2E; --teal:#8A4B2A; --teal-soft:#F0E0D2; --amber-soft:#F5E9C9; --danger:#B8492A;
+  --terra:#C4613E; --terra-soft:#F4DCCF; --sienna:#8A4B2A; --ochre:#C99A2E;
   --c-green:#2E8B57; --c-red:#C0392B; --c-blue:#2E63C4; --c-yellow:#D9A400; --c-purple:#7A3FA0; --c-orange:#E07B1A;
+  --serif:"Fraunces","Iowan Old Style","Georgia",serif;
   box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#141A1C; --card:#1E2629; --ink:#EDF1EF; --muted:#A3AFAB; --line:#334040;
-  --amber:#E5A04A; --teal:#5FB3AA; --teal-soft:#1F3A38; --amber-soft:#3E2E18; --danger:#E07A6A; } }
+  --bg:#1F1713; --card:#2A201A; --ink:#F4ECE2; --muted:#B5A08E; --line:#43362D;
+  --amber:#E0B35A; --teal:#D0845F; --teal-soft:#3A2A21; --amber-soft:#3E3320; --danger:#E27A5C;
+  --terra:#D97B58; --terra-soft:#3E2A22; --sienna:#D0845F; --ochre:#E0B35A; } }
 :root[data-theme="dark"]{
-  --bg:#141A1C; --card:#1E2629; --ink:#EDF1EF; --muted:#A3AFAB; --line:#334040;
-  --amber:#E5A04A; --teal:#5FB3AA; --teal-soft:#1F3A38; --amber-soft:#3E2E18; --danger:#E07A6A; }
+  --bg:#1F1713; --card:#2A201A; --ink:#F4ECE2; --muted:#B5A08E; --line:#43362D;
+  --amber:#E0B35A; --teal:#D0845F; --teal-soft:#3A2A21; --amber-soft:#3E3320; --danger:#E27A5C;
+  --terra:#D97B58; --terra-soft:#3E2A22; --sienna:#D0845F; --ochre:#E0B35A; }
 html{scroll-padding-top:env(safe-area-inset-top,0px); height:100%}
 *{box-sizing:border-box}
 body{margin:0; background:var(--bg); color:var(--ink); font-family:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif; font-size:17px; line-height:1.5; height:100%}
 main{max-width:560px; margin:0 auto; padding:18px 18px 110px}
-h1{font-size:1.9rem; line-height:1.1; margin:0 0 6px; letter-spacing:-.01em}
-h2{font-size:1.3rem; margin:0 0 6px; line-height:1.2}
+h1{font-family:var(--serif); font-weight:600; font-size:2.1rem; line-height:1.05; margin:0 0 8px; letter-spacing:-.01em}
+h2{font-family:var(--serif); font-weight:600; font-size:1.35rem; margin:0 0 6px; line-height:1.2}
 h3{font-size:1.05rem; margin:16px 0 6px}
 p{margin:0 0 12px}
 .muted{color:var(--muted)} .small{font-size:.92rem}
@@ -32,7 +36,7 @@ p{margin:0 0 12px}
 .tag{display:inline-block; font-size:.78rem; padding:2px 9px; border-radius:99px; background:var(--teal-soft); color:var(--teal); font-weight:700}
 .tag.exp{background:var(--amber-soft); color:var(--amber)}
 .tag.warn{background:#F3D6D2; color:var(--danger)}
-button{font:inherit; cursor:pointer; border:0; border-radius:12px; padding:12px 18px; background:var(--teal); color:#fff; font-weight:700}
+button{font:inherit; cursor:pointer; border:0; border-radius:14px; padding:13px 18px; background:var(--terra); color:#fff; font-weight:700; box-shadow:0 1px 0 rgba(0,0,0,.06)}
 button.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--line)}
 button.amber{background:var(--amber)}
 button:focus-visible{outline:3px solid var(--amber); outline-offset:2px}
@@ -47,13 +51,13 @@ nav{position:fixed; left:0; right:0; bottom:0; background:var(--card); border-to
 nav button{background:none; color:var(--muted); padding:10px 6px; border-radius:10px; font-size:.9rem; flex:1}
 nav button.on{color:var(--teal); background:var(--teal-soft)}
 .home-item{display:block; width:100%; text-align:left; background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin:10px 0; font-weight:400}
-.home-item b{display:block; font-size:1.1rem; margin-bottom:2px}
+.home-item b{display:block; font-family:var(--serif); font-weight:600; font-size:1.2rem; margin-bottom:2px}
 .home-item .small{color:var(--muted)}
 .study{border-left:4px solid var(--teal); padding:8px 12px; background:var(--teal-soft); border-radius:8px; margin:12px 0; font-size:.95rem}
 .study.exp{border-color:var(--amber); background:var(--amber-soft)}
 .goal{font-weight:700; margin:10px 0}
 .ring-wrap{display:grid; place-items:center; padding:24px 0 8px}
-.ring{width:210px; height:210px; border-radius:50%; background:var(--teal); opacity:.92; transform:scale(.62); transition:transform 4s ease-in-out; display:grid; place-items:center; color:#fff; font-weight:700; font-size:1.3rem}
+.ring{width:210px; height:210px; border-radius:50%; background:radial-gradient(circle at 35% 30%, var(--terra), var(--sienna)); opacity:.92; transform:scale(.62); transition:transform 4s ease-in-out; display:grid; place-items:center; color:#fff; font-weight:700; font-size:1.3rem}
 .ring.in{transform:scale(1)}
 @media (prefers-reduced-motion: reduce){ .ring{transition:none} }
 .arena{position:relative; height:300px; border-radius:14px; background:var(--card); border:1px solid var(--line); overflow:hidden; touch-action:none; user-select:none; -webkit-user-select:none}
@@ -76,16 +80,157 @@ canvas{width:100%; display:block}
 @keyframes slide{from{background-position:0 0}to{background-position:32px 0}}
 @media (prefers-reduced-motion: reduce){ .stripes{animation:none} }
 .cycle{display:flex; justify-content:space-between; margin-top:22px}
+
+.gate{position:fixed;inset:0;background:var(--bg);z-index:50;overflow:auto;padding:24px 18px calc(24px + env(safe-area-inset-bottom,0px))}
+.gate .wrap{max-width:560px;margin:0 auto}
+.tos{font-size:.95rem;line-height:1.6}.tos p{margin:0 0 10px}
+.gate .warnbox{border-left:4px solid var(--danger);background:#F3D6D2;color:#5A1F16;padding:10px 12px;border-radius:8px;margin:12px 0}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .gate .warnbox{background:#3D2320;color:#F3D6D2} }
+.gwarn{border-left:4px solid var(--danger);background:#F3D6D2;color:#5A1F16;padding:10px 12px;border-radius:8px;margin:12px 0;font-size:.95rem}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .gwarn{background:#3D2320;color:#F3D6D2} }
+.foot{text-align:center;margin-top:18px}
+.foot button{background:none;color:var(--muted);text-decoration:underline;padding:6px;font-weight:400;font-size:.9rem}
+
+.onb{position:fixed;inset:0;background:var(--bg);z-index:60;overflow:auto;display:flex;flex-direction:column}
+.onb .top{position:sticky;top:0;background:var(--bg);padding:calc(14px + env(safe-area-inset-top,0px)) 18px 8px;display:flex;align-items:center;gap:12px;z-index:1}
+.onb .bar{flex:1;height:6px;border-radius:6px;background:var(--line);overflow:hidden}
+.onb .bar div{height:100%;width:0;background:linear-gradient(90deg,var(--terra),var(--ochre));transition:width .35s ease}
+.onb .back{background:none;color:var(--muted);padding:6px 8px;font-size:1.3rem;box-shadow:none}
+.onb .body{flex:1;max-width:560px;width:100%;margin:0 auto;padding:12px 20px calc(28px + env(safe-area-inset-bottom,0px))}
+.onb .q{font-family:var(--serif);font-weight:600;font-size:1.9rem;line-height:1.1;margin:18px 0 6px;letter-spacing:-.01em}
+.onb .sub{color:var(--muted);margin:0 0 20px}
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1.5px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;font-weight:400;font-size:1.05rem;box-shadow:0 1px 2px rgba(60,30,10,.05);transition:transform .08s,border-color .15s,background .15s}
+.opt:active{transform:scale(.985)}
+.opt.on{border-color:var(--terra);background:var(--terra-soft)}
+.opt .em{display:inline-block;width:1.6em;font-size:1.2rem}
+.cta{display:block;width:100%;padding:17px;font-size:1.1rem;margin-top:22px;border-radius:16px}
+.cta:disabled{opacity:.4}
+.hero{font-family:var(--serif);font-weight:600;font-size:2.6rem;line-height:1.02;letter-spacing:-.015em;margin:36px 0 12px}
+.glyph{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--terra),var(--sienna));margin:40px auto 8px;box-shadow:0 12px 30px rgba(138,75,42,.25)}
+.loadwrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;text-align:center}
+.loadpct{font-family:var(--serif);font-size:4rem;font-weight:600;line-height:1;margin:16px 0 4px}
+.steps{width:100%;max-width:400px;margin:22px auto 0;text-align:left}
+.step{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);color:var(--muted);transition:color .3s}
+.step.done{color:var(--ink)}
+.step .dotc{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center;font-size:.7rem;color:#fff}
+.step.done .dotc{background:var(--terra);border-color:var(--terra)}
+.step.done .dotc::after{content:"✓"}
+.plan-item{padding:12px 0;border-bottom:1px solid var(--line)}
+.plan-item:last-child{border:0}
+.plan-item b{font-family:var(--serif);font-weight:600;font-size:1.1rem}
+.pw-feat{display:flex;gap:10px;align-items:flex-start;padding:8px 0}
+.pw-feat .ck{width:22px;height:22px;border-radius:50%;background:var(--terra);color:#fff;display:grid;place-items:center;font-size:.8rem;flex:none;margin-top:2px}
+.plan{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px;margin:10px 0;cursor:pointer}
+.plan.on{border-color:var(--terra);background:var(--terra-soft)}
+.plan .badge{font-size:.72rem;background:var(--ochre);color:#2B1F16;padding:2px 8px;border-radius:99px;font-weight:700;margin-left:6px}
+.legal{font-size:.78rem;color:var(--muted);text-align:center;margin-top:12px;line-height:1.45}
+.legal button{background:none;color:var(--muted);text-decoration:underline;padding:2px 4px;font-weight:400;font-size:.78rem;box-shadow:none}
+.today{background:linear-gradient(135deg,var(--terra),var(--sienna));color:#fff;border-radius:18px;padding:18px;margin:14px 0 6px}
+.today h2{color:#fff;margin:0 0 4px}
+.today p{margin:0;opacity:.92}
 </style>
 </head>
 <body>
+<div id="gate" class="gate hidden"><div class="wrap">
+  <h1>Terms of Use and Privacy Policy</h1>
+  <p class="muted small">Please read before using Anchor. Scroll to the end to accept.</p>
+  <div class="tos" id="tos">
+<p>Effective date: 23 September 2026</p>
+<p>These Terms of Use and Privacy Policy (the "Terms") are a legal agreement between you and the developer of Anchor, YOUR_NAME, of YOUR_ADDRESS ("we", "us", "the Developer"). They govern your use of the Anchor application and any related content, updates and documentation (the "App"). Please read them carefully. By tapping Accept, or by using the App, you agree to be bound by these Terms. If you do not agree, do not use the App.</p>
+
+<p>1. What Anchor is</p>
+<p>1.1 Anchor is a collection of self-guided attention, perception and cognitive exercises presented as short games. Each exercise is accompanied by a plain-language summary of published research about depersonalization and derealization on which that exercise is loosely based.</p>
+<p>1.2 The App is provided for personal, informational and educational use only. It is not a substitute for professional medical, psychological or psychiatric advice, diagnosis or treatment.</p>
+<p>1.3 The research summaries in the App describe the studies that inspired each exercise. They are not claims that the exercise reproduces those studies, has been tested, or produces any particular result. Many of the exercises are explicitly labelled experimental, meaning they have never been evaluated in people with depersonalization or derealization.</p>
+
+<p>2. Not a medical device, not treatment</p>
+<p>2.1 Anchor is not a medical device, is not intended to be one, and has not been evaluated or cleared by the U.S. Food and Drug Administration or any other regulator.</p>
+<p>2.2 Anchor does not diagnose, treat, cure, mitigate or prevent any disease, disorder or condition, including depersonalization-derealization disorder, anxiety, panic, dissociation or any other mental health condition.</p>
+<p>2.3 Anchor may not help you. It may have no effect. In some people, some exercises may temporarily increase feelings of detachment, anxiety or discomfort. You should stop any exercise that makes you feel worse.</p>
+<p>2.4 Anchor is not a crisis service. If you are in distress, are thinking about harming yourself, or feel unsafe, contact a licensed clinician, your local emergency number, or a crisis line immediately. In the United States you can call or text 988.</p>
+<p>2.5 The only approach with clinical trial evidence for depersonalization-derealization disorder is cognitive behavioural therapy delivered by a qualified therapist. Nothing in the App replaces that. If you have or suspect you have a mental health condition, consult a qualified professional before and while using the App.</p>
+<p>2.6 Any before-and-after ratings you enter are for your own reference only. They are not a clinical assessment and should not be used to make decisions about medication, therapy or any other care.</p>
+
+<p>3. Health, safety and photosensitivity warnings</p>
+<p>3.1 Some exercises use moving patterns, rapid image flashes, optic flow, contrasting stripes and repeated head movement. These include, without limitation, the exercises named Exposure, Flow anchor, Face read, Prediction breaker and Gaze hold. Future versions may add others.</p>
+<p>3.2 Do not use these exercises if you have epilepsy or a history of seizures, photosensitivity, migraine with aura, a vestibular or inner-ear condition, or if you are prone to motion sickness. A small percentage of people may experience seizures or blackouts when exposed to certain visual patterns or flashing lights, even with no prior history. If you or anyone in your family has an epileptic condition, consult a physician before using the App.</p>
+<p>3.3 Stop using the App immediately and seek medical attention if you experience dizziness, nausea, altered vision, eye or muscle twitching, loss of awareness, disorientation, involuntary movement or convulsions.</p>
+<p>3.4 The exercise named Exposure deliberately induces a feeling of detachment or unreality using moving stripes. It is based on interoceptive exposure techniques used in clinical settings under supervision. Use it only when you are calm, in a safe environment, and not already distressed. Skip it entirely if in doubt.</p>
+<p>3.5 Exercises that involve head movement (such as Gaze hold) or holding the device at arm's length should be done seated, in a clear space, and stopped if you feel unsteady.</p>
+<p>3.6 Do not use the App while driving, operating machinery, walking in traffic or in any situation where distraction could be dangerous.</p>
+<p>3.7 Take breaks. We recommend no more than 20 minutes of continuous use and no more than three sessions per day.</p>
+
+<p>4. Privacy policy: what data the App handles</p>
+<p>4.1 We do not collect, receive, store, transmit, sell or share any personal data from the App. There are no user accounts, no sign-in, no analytics, no advertising, no crash reporting, no tracking, and no third-party software development kits that send data off your device.</p>
+<p>4.2 The App stores the following information only in local storage on your device: your acceptance of these Terms and the time you accepted; the before-and-after ratings you enter; and scores and settings from the exercises you play. This information is used solely to display your own history inside the App. It is never transmitted anywhere.</p>
+<p>4.3 The App may request permission to access device motion and orientation sensors to support tilt-based exercises. If you grant it, motion readings are used live to move objects on screen and are not stored, logged or transmitted. You can deny or revoke this permission in your device settings at any time; the affected exercises will fall back to touch control.</p>
+<p>4.4 The App plays sounds it generates itself. It does not use the microphone or camera.</p>
+<p>4.5 Retention and deletion. Locally stored data remains on your device until you delete it. You can clear your ratings and scores at any time using the Clear log button in the Log screen. Deleting the App from your device deletes all of its data. Because we never receive your data, we cannot access, recover, or delete it on your behalf.</p>
+<p>4.6 Your rights. Because we hold no data about you, requests to access, correct, export or erase personal data do not apply to us. If you believe we hold data about you, contact us at the address in section 14 and we will respond within 30 days.</p>
+<p>4.7 Apple. Apple may collect information about your download and use of the App (for example, crash logs or App Store analytics) under Apple's own privacy policy, which you can read at apple.com/privacy. We do not receive personally identifying data from Apple.</p>
+<p>4.8 Data protection laws. We aim to comply with applicable privacy laws including, where they apply, the California Consumer Privacy Act, the General Data Protection Regulation and the UK GDPR. Because we process no personal data, no data protection officer, representative or transfer mechanism is required. We do not sell or share personal information as those terms are defined in the CCPA.</p>
+
+<p>5. Future changes to data practices</p>
+<p>5.1 Future versions of the App may add optional anonymised usage statistics to help improve the exercises, such as which exercises are played and for how long, with no identifiers.</p>
+<p>5.2 If that happens, the App will ask for your permission before any such data is collected, you will be able to decline without losing any functionality, the App Store privacy label will be updated, and these Terms will be revised and presented to you again before the change takes effect. We will never add such collection silently.</p>
+
+<p>6. Children</p>
+<p>6.1 The App is not directed at children under 13 and is intended for use by adults. We do not knowingly collect personal information from anyone, including children. If you are under 18, use the App only with the permission and supervision of a parent or guardian.</p>
+
+<p>7. Licence and permitted use</p>
+<p>7.1 Subject to these Terms, we grant you a limited, non-exclusive, non-transferable, revocable licence to install and use the App on any Apple-branded device that you own or control, as permitted by the Usage Rules set out in the Apple Media Services Terms and Conditions. The App may be accessed and used by other accounts associated with you via Family Sharing or volume purchasing where available.</p>
+<p>7.2 You may not: copy, modify, reverse engineer, decompile or disassemble the App except to the extent permitted by law; rent, lease, lend, sell, redistribute or sublicense it; remove any proprietary notices; use it to build a competing product; or use it in any way that violates applicable law.</p>
+<p>7.3 The App, including its code, design, text, artwork, sounds and exercise names, is owned by the Developer and protected by copyright and other intellectual property laws. The research summaries describe third-party scientific publications; the underlying studies belong to their respective authors and publishers and are cited for information.</p>
+
+<p>8. Updates, availability and support</p>
+<p>8.1 We may update, modify, suspend or discontinue the App or any exercise at any time, with or without notice, and are not liable to you for doing so.</p>
+<p>8.2 We are solely responsible for providing any maintenance and support for the App. Apple has no obligation to provide any maintenance or support services for it. Support is available at the contact details in section 14 on a reasonable-efforts basis.</p>
+
+<p>9. Third-party terms and open-source components</p>
+<p>9.1 The App is built with the Capacitor framework (MIT licence) and uses the Atkinson Hyperlegible typeface (SIL Open Font License 1.1). You must comply with any applicable third-party terms when using the App.</p>
+<p>9.2 The App does not link to or integrate with any third-party services.</p>
+
+<p>10. Disclaimer of warranties</p>
+<p>10.1 The App is provided "as is" and "as available", with all faults, and without warranty of any kind. To the maximum extent permitted by applicable law, we disclaim all warranties, express or implied, including warranties of merchantability, fitness for a particular purpose, accuracy, non-infringement, and any warranty that the App will meet your requirements, be uninterrupted, timely, secure or error-free, or that it will produce any health, wellbeing or cognitive benefit.</p>
+<p>10.2 No advice or information, whether oral or written, obtained from us or through the App creates any warranty not expressly stated in these Terms.</p>
+<p>10.3 In the event of any failure of the App to conform to any applicable warranty, you may notify Apple, and Apple will refund the purchase price for the App to you, if any. To the maximum extent permitted by applicable law, Apple will have no other warranty obligation whatsoever with respect to the App, and any other claims, losses, liabilities, damages, costs or expenses attributable to any failure to conform to any warranty will be our sole responsibility.</p>
+
+<p>11. Limitation of liability</p>
+<p>11.1 To the maximum extent permitted by applicable law, in no event will the Developer be liable for any indirect, incidental, special, consequential, exemplary or punitive damages, or for any loss of data, health outcomes, emotional distress, personal injury, or any other loss arising out of or in connection with your use of or inability to use the App, however caused and under any theory of liability, even if advised of the possibility of such damages.</p>
+<p>11.2 To the maximum extent permitted by applicable law, our total aggregate liability to you for all claims arising out of or relating to the App or these Terms will not exceed the greater of the amount you paid for the App (if any) in the twelve months before the claim, or ten U.S. dollars.</p>
+<p>11.3 Some jurisdictions do not allow the exclusion of certain warranties or the limitation of liability for certain damages, so some of the above may not apply to you. Nothing in these Terms excludes liability that cannot be excluded by law.</p>
+
+<p>12. Product claims, legal compliance and Apple's role</p>
+<p>12.1 You acknowledge that these Terms are between you and the Developer only, and not with Apple Inc. ("Apple"). The Developer, not Apple, is solely responsible for the App and its content.</p>
+<p>12.2 The Developer, not Apple, is responsible for addressing any claims by you or any third party relating to the App or your possession or use of it, including product liability claims, any claim that the App fails to conform to any applicable legal or regulatory requirement, and claims arising under consumer protection, privacy or similar legislation.</p>
+<p>12.3 In the event of any third-party claim that the App or your possession and use of it infringes that third party's intellectual property rights, the Developer, not Apple, will be solely responsible for the investigation, defence, settlement and discharge of any such claim.</p>
+<p>12.4 You represent and warrant that you are not located in a country subject to a U.S. Government embargo or designated by the U.S. Government as a "terrorist supporting" country, and that you are not listed on any U.S. Government list of prohibited or restricted parties.</p>
+<p>12.5 You acknowledge and agree that Apple and Apple's subsidiaries are third-party beneficiaries of these Terms, and that upon your acceptance of these Terms, Apple will have the right (and will be deemed to have accepted the right) to enforce these Terms against you as a third-party beneficiary.</p>
+<p>12.6 The App is not intended for use in any medical, emergency, life-support or safety-critical context.</p>
+
+<p>13. Governing law, disputes and general terms</p>
+<p>13.1 These Terms are governed by the laws of the State of New Jersey, USA, without regard to conflict of law principles. If you are a consumer in the European Union or the United Kingdom, you also benefit from mandatory provisions of the law of the country in which you live.</p>
+<p>13.2 Any dispute arising from these Terms or the App will be resolved in the state or federal courts located in New Jersey, and you consent to their jurisdiction, except where your local law gives you the right to bring proceedings where you live.</p>
+<p>13.3 If any provision of these Terms is held unenforceable, the remaining provisions will remain in full force. Our failure to enforce any right is not a waiver of that right. These Terms are the entire agreement between you and us regarding the App. You may not assign these Terms; we may assign them to a successor.</p>
+<p>13.4 We may revise these Terms from time to time. Material changes will be presented in the App and will require your acceptance before continued use. The effective date at the top shows when the Terms were last revised.</p>
+
+<p>14. Contact</p>
+<p>Developer: YOUR_NAME</p>
+<p>Address: YOUR_ADDRESS</p>
+<p>Email: YOUR_EMAIL</p>
+<p>You can reread these Terms at any time from the link at the bottom of the home screen.</p>
+  </div>
+  <div class="row" style="margin-top:18px"><button id="b-accept" style="flex:1;padding:16px">Accept</button></div>
+</div></div>
+<div id="onb" class="onb hidden"></div>
 <main>
 
 <section id="v-home">
   <h1>Anchor</h1>
-  <p class="muted">Twenty games. Each one is built on a published finding about depersonalization and derealization. Tap one, read the study, play the game. The working assumption of this app: the mechanisms that produce DPDR are known well enough that they can be trained against. Some of that is proven, some is a bet.</p>
+  <p class="muted">Twenty exercises. Each one is built on a published finding about depersonalization and derealization. Tap one, read the study, play the game. The working assumption of this app: the mechanisms that produce DPDR are known well enough that they can be trained against. Some of that is proven, some is a bet.</p>
   <div id="home-list"></div>
   <div class="notice small">Ratings are asked only before and after a game, never during. Symptom-checking keeps DPDR going, so the app won't do it for you. And one honest line: CBT with a therapist is the only intervention with clinical trial results. This is a training ground, not a replacement.</div>
+  <div class="foot"><button id="b-terms">Terms, privacy and warnings</button></div>
 </section>
 
 <section id="v-game" class="hidden">
@@ -94,7 +239,7 @@ canvas{width:100%; display:block}
   <div class="study" id="g-study"></div>
   <p class="goal" id="g-goal"></p>
   <p class="small muted" id="g-how"></p>
-  <div id="g-body"></div>
+  <div id="g-warn" class="gwarn hidden"></div><div id="g-body"></div>
   <div class="cycle"><button class="ghost" id="b-prev">← Previous</button><button class="ghost" id="b-next">Next →</button></div>
 </section>
 
@@ -103,7 +248,7 @@ canvas{width:100%; display:block}
   <p class="muted small">Before and after ratings, all games. Amber is before, teal is after. The point is that the number moves. Most people who say it's constant find it isn't.</p>
   <div class="card"><canvas id="chart" width="600" height="240" style="height:120px"></canvas><p id="log-empty" class="muted small">No sessions yet.</p></div>
   <div class="card" id="log-stats"></div>
-  <div class="row"><button class="ghost" id="b-clear">Clear log</button></div>
+  <div class="row"><button class="ghost" id="b-clear">Clear log</button><button class="ghost" id="b-reset">Restart onboarding</button></div>
 </section>
 </main>
 
@@ -343,6 +488,7 @@ const GAMES=[
 
 /* 11 FACE READ */
 {key:'face',title:'Face read',tag:'Experimental',exp:true,
+ warn:'Uses rapid image flashes down to 50 ms. Skip it if you are photosensitive.',
  blurb:'Read the feeling before the face is gone.',
  study:'Lemche et al. (2007), NeuroReport. DPDR patients showed the reverse of the normal brain pattern to emotional faces: as expressions got more intense, their amygdala response went down, and prefrontal dampening regions went up. EEG work found the face-processing signal barely distinguishes emotional from neutral faces in high-DP people. Speeded emotional-face training exists for other conditions. It has never been aimed at DPDR.',
  goal:'Goal: get the emotional read to happen fast, before the dampening circuit can switch it off.',
@@ -360,6 +506,7 @@ const GAMES=[
 
 /* 12 EXPOSURE */
 {key:'exposure',title:'Exposure',tag:'Experimental. Read the warning.',exp:true,
+ warn:'This game deliberately induces the detached feeling using moving stripes. Skip it if you have epilepsy, migraine with aura, or are already very distressed.',
  blurb:'Bring it on deliberately. Let it pass.',
  study:'Lickel, Nelson, Lickel and Deacon (2008), Cognitive and Behavioral Practice. In panic patients with depersonalization, therapists induced the feeling on purpose (3D glasses, dot staring) so patients could sit with it and habituate. It faded fast within sessions and panic dropped. Dockery (2014) replicated habituation across three weekly sessions. Tested in panic, not in primary DPDR.',
  goal:'Goal: learn in your body that the feeling arrives, peaks, and leaves, and that you survive it every time.',
@@ -390,6 +537,7 @@ const GAMES=[
 
 /* 14 FLOW ANCHOR */
 {key:'flow',title:'Flow anchor',tag:'Experimental',exp:true,
+ warn:'Moving optic flow can cause motion sickness and can trigger symptoms in people with vestibular conditions or migraine.',
  blurb:'The screen rushes at you. Stay put and spot the gap.',
  study:'D\'Amour et al. (2021) found that the stronger people feel illusory self-motion from a moving visual field (vection), the higher they score on depersonalization. Caloric stimulation of the inner ear and vestibular disease both produce DPDR symptoms in people who never had them (Jáuregui-Renaud 2015; Sang et al. 2006). This game pushes an optic-flow field at you and asks you to keep doing a precise visual task through it.',
  goal:'Goal: stay anchored and accurate while your visual system insists you are moving.',
@@ -408,6 +556,7 @@ const GAMES=[
 
 /* 15 GAZE HOLD */
 {key:'gaze',title:'Gaze hold',tag:'Experimental (from vestibular rehab)',exp:true,
+ warn:'Involves repeated head turning. Can cause dizziness or nausea.',
  blurb:'Turn your head. Keep your eyes on the dot. Read the letter.',
  study:'Gaze-stabilisation exercises are the core of vestibular rehabilitation: fix the eyes on a target while the head moves, so the reflex that keeps the world still during head movement gets retrained. Jáuregui-Renaud (2015) links DPDR to exactly the sensory mismatch this reflex is supposed to cancel. Dynamic visual acuity, reading while the head moves, is how clinics measure progress.',
  goal:'Goal: make the world hold still while you move, by training the reflex that is supposed to do that.',
@@ -510,9 +659,87 @@ const GAMES=[
   return ()=>T.clear()}}
 ];
 
+
+/* ===== HAPTICS ===== */
+function haptic(kind){try{const H=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Haptics;if(H){if(kind==='success')H.notification({type:'SUCCESS'});else H.impact({style:kind==='heavy'?'Heavy':kind==='medium'?'Medium':'Light'});return}if(navigator.vibrate)navigator.vibrate(kind==='heavy'?25:10)}catch(e){}}
+
+/* ===== ONBOARDING: survey -> loading -> plan -> paywall ===== */
+const Q=[
+ {k:'duration',q:'How long has this been going on?',sub:'Roughly is fine.',opts:[['🌱','A few days'],['🌿','A few weeks'],['🌾','A few months'],['🌳','A year or more']]},
+ {k:'describe',q:'How would you describe it?',sub:'Pick everything that fits.',multi:true,opts:[['🫥','Detached from my body, like I am not in it'],['🪟','The world looks flat, dreamlike or fake'],['🎥','Watching myself from outside'],['🫧','Emotionally numb, even with people I love'],['⏳','Time feels off, too fast or too slow'],['🪞','My voice, hands or reflection look strange']]},
+ {k:'pattern',q:'How does it show up?',opts:[['🌫️','Constant, all day'],['🌤️','Most of the day, with breaks'],['🌊','Comes in waves'],['✨','Occasionally']]},
+ {k:'intensity',q:'How strong is it right now?',opts:[['1','Mild, I can mostly ignore it'],['2','Moderate, it is on my mind'],['3','Strong, hard to focus'],['4','Overwhelming']]},
+ {k:'trigger',q:'What seemed to set it off?',opts:[['🔥','Stress or burnout'],['💥','A panic attack'],['🍃','Cannabis or another substance'],['🖤','A loss or a hard event'],['❓','Nothing obvious']]},
+ {k:'sleep',q:'How much do you sleep per night?',sub:'On a normal night, lately.',opts:[['🌑','Under 5 hours'],['🌘','5 to 6 hours'],['🌗','6 to 7 hours'],['🌕','7 to 8 hours'],['☀️','More than 8']]},
+ {k:'work',q:'How many hours a day do you work or study?',opts:[['🪶','Under 4'],['📘','4 to 8'],['📚','8 to 11'],['🏔️','More than 11']]},
+ {k:'screens',q:'Screen time per day?',sub:'Phone, laptop, everything.',opts:[['🌿','Under 3 hours'],['📱','3 to 6 hours'],['💻','6 to 9 hours'],['🌀','More than 9']]},
+ {k:'caffeine',q:'Caffeine per day?',opts:[['🚫','None'],['☕','1 to 2'],['☕☕','3 to 4'],['⚡','5 or more']]},
+ {k:'checking',q:'How often do you check whether the feeling is still there, or read about it?',opts:[['🍂','Rarely'],['🔍','Sometimes'],['🔁','Daily'],['🌀','Constantly, it is hard to stop']]},
+ {k:'fear',q:'What worries you most about it?',opts:[['♾️','That it is permanent'],['🧠','That I am losing my mind'],['⚠️','That I have damaged my brain'],['🫂','That no one understands'],['🤷','Nothing specific']]},
+ {k:'tried',q:'What have you tried so far?',multi:true,opts:[['🛋️','Therapy'],['💊','Medication'],['🌬️','Meditation or breathing'],['🏃','Exercise'],['📖','Reading and researching'],['🆕','Nothing yet']]},
+ {k:'goal',q:'What would a good outcome look like?',opts:[['🌅','Feel present in my life again'],['🧭','Understand what is happening to me'],['🔓','Break the checking loop'],['❤️','Feel my emotions again']]},
+ {k:'minutes',q:'How many minutes a day can you give this?',sub:'Honest answer. Small and daily beats big and rare.',opts:[['⏱️','5 minutes'],['⏱️','10 minutes'],['⏱️','15 minutes'],['⏱️','20 or more']]}
+];
+const ANS=store.get('anchor_onb_v1',null);
+function onbRender(){const o=$('onb');o.classList.remove('hidden');o.innerHTML='';return o}
+function onbShell(pct,back){const o=onbRender();o.appendChild(el(`<div class="top"><button class="back" id="onb-back" ${back?'':'style="visibility:hidden"'}>‹</button><div class="bar"><div style="width:${pct}%"></div></div></div>`));const b=el(`<div class="body"></div>`);o.appendChild(b);return b}
+function onbWelcome(){const b=onbShell(2,false);b.innerHTML=`<div class="glyph"></div><div class="hero">Let's understand what you're experiencing.</div><p class="muted" style="font-size:1.05rem">Fourteen quick questions. Your answers shape a daily protocol built from published research on depersonalization and derealization. Nothing leaves your phone.</p><button class="cta" id="onb-go">Begin</button><p class="small muted" style="text-align:center;margin-top:12px">Takes about two minutes</p>`;b.querySelector('#onb-go').onclick=()=>{haptic('medium');onbQ(0,{})}}
+function onbQ(i,ans){if(i>=Q.length)return onbLoading(ans);const q=Q[i];const b=onbShell(4+92*i/Q.length,true);$('onb-back').onclick=()=>{haptic();i===0?onbWelcome():onbQ(i-1,ans)};
+  b.innerHTML=`<p class="small muted" style="margin:0">${i+1} of ${Q.length}</p><div class="q">${q.q}</div>${q.sub?`<p class="sub">${q.sub}</p>`:'<p class="sub"></p>'}<div id="onb-opts"></div>${q.multi?'<button class="cta" id="onb-next" disabled>Continue</button>':''}`;
+  const box=b.querySelector('#onb-opts');let sel=new Set(ans[q.k]?[].concat(ans[q.k]):[]);
+  q.opts.forEach(([em,label],j)=>{const o=el(`<button class="opt ${sel.has(label)?'on':''}"><span class="em">${em}</span>${label}</button>`);o.onclick=()=>{haptic();if(q.multi){if(sel.has(label))sel.delete(label);else sel.add(label);o.classList.toggle('on');b.querySelector('#onb-next').disabled=!sel.size}else{[...box.children].forEach(x=>x.classList.remove('on'));o.classList.add('on');ans[q.k]=label;T_ONB.after(220,()=>onbQ(i+1,ans))}};box.appendChild(o)});
+  if(q.multi)b.querySelector('#onb-next').onclick=()=>{haptic('medium');ans[q.k]=[...sel];onbQ(i+1,ans)}}
+const T_ONB=timers();
+function onbLoading(ans){const b=onbShell(96,false);const STEPS=['Reading your symptom profile','Matching to published mechanisms','Weighting sleep, load and checking habits','Selecting your core exercises','Calibrating the experimental lab','Building your daily protocol'];
+  b.innerHTML=`<div class="loadwrap"><div class="glyph" style="margin-top:0"></div><div class="loadpct" id="ld-pct">0%</div><p class="muted" id="ld-msg">Curating your protocol</p><div class="steps">${STEPS.map(s=>`<div class="step"><div class="dotc"></div><span>${s}</span></div>`).join('')}</div></div>`;
+  const total=30000,t0=performance.now();const steps=b.querySelectorAll('.step');const msgs=['Curating your protocol','This is built from your answers','Almost there'];
+  T_ONB.every(100,()=>{const p=Math.min(1,(performance.now()-t0)/total);const e=1-Math.pow(1-p,2.2);b.querySelector('#ld-pct').textContent=Math.round(e*100)+'%';steps.forEach((s,k)=>{if(e>(k+1)/STEPS.length-.02&&!s.classList.contains('done')){s.classList.add('done');haptic()}});b.querySelector('#ld-msg').textContent=msgs[Math.min(2,Math.floor(p*3))];if(p>=1){T_ONB.clear();haptic('success');onbPlan(ans)}})}
+function buildPlan(a){const items=[];const has=(k,v)=>(a[k]||'').includes(v);
+  if(has('sleep','Under 5')||has('sleep','5 to 6'))items.push(['Sleep is lever one','You are sleeping '+a.sleep.toLowerCase()+'. Sleep loss reliably makes detachment worse and no exercise outweighs it. One earlier night this week before judging anything else.']);
+  if(has('checking','Constantly')||has('checking','Daily'))items.push(['Break the checking loop','You check or read about it '+a.checking.toLowerCase().split(',')[0]+'. In the CBT model that is a maintaining factor, not coping. Reframe and Engage are your first two exercises, and the app will never prompt you to check.']);
+  if(has('trigger','Cannabis'))items.push(['Your onset is common','DPDR that starts after cannabis or a bad trip is one of the most frequent onset stories in the case literature. It does not mean brain damage. Reframe targets that exact fear.']);
+  if(has('trigger','panic'))items.push(['Your onset is common','Starting during a panic attack is classic. Detachment is part of a normal fear response. What makes it stick is the scary explanation given afterwards. Breathe and Reframe first.']);
+  if(has('fear','permanent')||has('fear','losing my mind')||has('fear','damaged'))items.push(['Your biggest fear has a game','"'+a.fear+'" is the catastrophic reading Hunter et al. showed keeps the loop running. Reframe drills the calm, true alternative until it is automatic.']);
+  if(has('describe','numb'))items.push(['For the numbness','Breathe was chosen for you: the 2013 study showed breathing while emotional sounds play brought back body responses in patients within minutes.']);
+  if(has('describe','Detached from my body')||has('describe','outside'))items.push(['For the out-of-body feeling','Ownership drift, Pulse sync and Self first target body ownership and self-priority, the systems that go quiet in DPDR.']);
+  if(has('describe','flat'))items.push(['For the flat, dreamlike world','Prediction breaker and Flow anchor push sensory evidence over expectation, the predictive-coding account of derealization.']);
+  if(has('describe','Time'))items.push(['For the time distortion','Time sense and Agency clock recalibrate your internal clock and your sense of causing things.']);
+  if(has('work','More than 11')||has('screens','More than 9'))items.push(['Load-shed','Long days inside your head. Two Engage rounds beat another hour of reading, and cost three minutes.']);
+  if(has('caffeine','5')||has('caffeine','3 to 4'))items.push(['Caffeine','Halve it for a week as an experiment. Anxiety is the fuel.']);
+  if(has('duration','days')||has('duration','weeks'))items.push(['Recent onset','Short episodes are common and most fade on their own. The job now is to not turn a passing episode into a long one.']);
+  items.push(['Your daily core, '+(a.minutes||'10 minutes'),'Engage (60 s), Breathe (3 min), Reframe (1 min). Then one Lab game of your choice. Rate before and after so the Log can show you the number moves.']);
+  items.push(['The honest line','CBT with a therapist is the only approach with clinical trial results. This protocol rehearses pieces of it. It does not replace it.']);
+  return items}
+function onbPlan(ans){const b=onbShell(98,false);const items=buildPlan(ans);const core=[];if(ans.describe){if(ans.describe.some(d=>d.includes('numb')))core.push('Breathe');if(ans.describe.some(d=>d.includes('body')||d.includes('outside')))core.push('Ownership drift');if(ans.describe.some(d=>d.includes('flat')))core.push('Prediction breaker');if(ans.describe.some(d=>d.includes('Time')))core.push('Time sense')}
+  b.innerHTML=`<p class="small muted" style="margin:14px 0 0">Your protocol</p><div class="hero" style="margin-top:6px;font-size:2.2rem">Built for how it shows up for you.</div><div class="card" id="pl"></div><button class="cta" id="pl-go">Continue</button>`;
+  b.querySelector('#pl').innerHTML=items.map(([t,x])=>`<div class="plan-item"><b>${t}</b><p class="small" style="margin:3px 0 0">${x}</p></div>`).join('');
+  b.querySelector('#pl-go').onclick=()=>{haptic('medium');store.set('anchor_onb_v1',{answers:ans,plan:items,core,at:Date.now()});onbPaywall()}}
+function onbPaywall(){const b=onbShell(100,false);let plan='year';
+  b.innerHTML=`<div class="hero" style="font-size:2.2rem;margin-top:20px">Start your protocol.</div><p class="muted">Everything unlocked. Cancel any time.</p>
+  <div class="pw-feat"><div class="ck">✓</div><div>All 20 research-based exercises, including the experimental lab</div></div>
+  <div class="pw-feat"><div class="ck">✓</div><div>Your personalised daily protocol, updated as you log</div></div>
+  <div class="pw-feat"><div class="ck">✓</div><div>Before-and-after tracking that shows you the number moves</div></div>
+  <div class="pw-feat"><div class="ck">✓</div><div>New exercises as new studies land</div></div>
+  <div class="plan on" data-p="year"><div><b>Yearly</b> <span class="badge">Best value</span><br><span class="small muted">7 days free, then $39.99 / year</span></div><div><b>$3.33</b><span class="small muted"> / mo</span></div></div>
+  <div class="plan" data-p="month"><div><b>Monthly</b><br><span class="small muted">$9.99 / month</span></div><div><b>$9.99</b><span class="small muted"> / mo</span></div></div>
+  <button class="cta" id="pw-go">Start 7-day free trial</button>
+  <p class="legal">Payment is charged to your Apple ID account at confirmation of purchase, or after the free trial if one is offered. Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Manage or cancel in your App Store account settings.<br><button id="pw-restore">Restore purchases</button> · <button id="pw-terms">Terms</button> · <button id="pw-priv">Privacy</button></p>
+  <p class="legal"><button id="pw-skip">Continue with the free version</button></p>`;
+  b.querySelectorAll('.plan').forEach(p=>p.onclick=()=>{haptic();b.querySelectorAll('.plan').forEach(x=>x.classList.remove('on'));p.classList.add('on');plan=p.dataset.p;b.querySelector('#pw-go').textContent=plan==='year'?'Start 7-day free trial':'Subscribe for $9.99 / month'});
+  const done=(tier)=>{haptic('success');store.set('anchor_tier',{tier,plan,at:Date.now()});$('onb').classList.add('hidden');afterOnboarding()};
+  b.querySelector('#pw-go').onclick=()=>done('premium');b.querySelector('#pw-skip').onclick=()=>done('free');b.querySelector('#pw-restore').onclick=()=>{haptic();alert('Purchases will be restored through the App Store once billing is connected.')};
+  b.querySelector('#pw-terms').onclick=b.querySelector('#pw-priv').onclick=()=>{$('gate').classList.remove('hidden');$('b-accept').textContent='Close'}}
+function afterOnboarding(){if(!store.get('anchor_terms_v1')){const g=$('gate');g.classList.remove('hidden');$('b-accept').textContent='Accept';window.scrollTo(0,0)}else home()}
+function todayCard(){const o=store.get('anchor_onb_v1',null);const l=$('home-list');const t=el(`<div class="today"><h2>Today's protocol</h2><p>${o?'Engage, then Breathe, then Reframe.'+(o.core&&o.core.length?' Lab pick: '+o.core[0]+'.':' Lab pick: your choice.')+' About '+(o.answers.minutes||'10 minutes')+'.':'Engage, Breathe, Reframe, then one Lab game.'}</p></div>`);l.parentNode.insertBefore(t,l)}
+
+/* TERMS GATE */
+(function(){const g=$('gate'),acc=$('b-accept');function show(ro){g.classList.remove('hidden');acc.textContent=ro?'Close':'Accept';window.scrollTo(0,0)}
+  acc.onclick=()=>{if(acc.textContent==='Close'){g.classList.add('hidden');return}haptic('success');store.set('anchor_terms_v1',{at:Date.now()});g.classList.add('hidden');home()};
+  $('b-terms').onclick=()=>show(true)})();
+
 /* ROUTING */
-function home(){$('v-home').classList.remove('hidden');$('v-game').classList.add('hidden');$('v-log').classList.add('hidden');nav('home');const l=$('home-list');l.innerHTML='';GAMES.forEach((g,i)=>{const b=el(`<button class="home-item"><span class="tag ${g.exp?'exp':''}">${g.tag}</span><b>${g.title}</b><span class="small">${g.blurb}</span></button>`);b.onclick=()=>open(i);l.appendChild(b)});window.scrollTo(0,0)}
-function open(i){if(cleanup){try{cleanup()}catch(e){}cleanup=null}cur=i;const g=GAMES[i];$('v-home').classList.add('hidden');$('v-log').classList.add('hidden');$('v-game').classList.remove('hidden');nav(null);$('g-tag').textContent=g.tag;$('g-tag').className='tag '+(g.exp?'exp':'');$('g-title').textContent=g.title;$('g-study').textContent=g.study;$('g-study').className='study '+(g.exp?'exp':'');$('g-goal').textContent=g.goal;$('g-how').textContent=g.how;const body=$('g-body');body.innerHTML='';cleanup=g.build(body);$('b-prev').textContent='← '+GAMES[(i+GAMES.length-1)%GAMES.length].title;$('b-next').textContent=GAMES[(i+1)%GAMES.length].title+' →';window.scrollTo(0,0)}
+function home(){$('v-home').classList.remove('hidden');$('v-game').classList.add('hidden');$('v-log').classList.add('hidden');nav('home');const l=$('home-list');l.innerHTML='';const old=document.querySelector('.today');if(old)old.remove();todayCard();GAMES.forEach((g,i)=>{const b=el(`<button class="home-item"><span class="tag ${g.exp?'exp':''}">${g.tag}</span><b>${g.title}</b><span class="small">${g.blurb}</span></button>`);b.onclick=()=>{haptic();open(i)};l.appendChild(b)});window.scrollTo(0,0)}
+function open(i){if(cleanup){try{cleanup()}catch(e){}cleanup=null}cur=i;const g=GAMES[i];$('v-home').classList.add('hidden');$('v-log').classList.add('hidden');$('v-game').classList.remove('hidden');nav(null);$('g-tag').textContent=g.tag;$('g-tag').className='tag '+(g.exp?'exp':'');$('g-title').textContent=g.title;$('g-study').textContent=g.study;$('g-study').className='study '+(g.exp?'exp':'');$('g-goal').textContent=g.goal;$('g-how').textContent=g.how;const gw=$('g-warn');if(g.warn){gw.textContent=g.warn+' Stop if you feel unwell.';gw.classList.remove('hidden')}else gw.classList.add('hidden');const body=$('g-body');body.innerHTML='';cleanup=g.build(body);$('b-prev').textContent='← '+GAMES[(i+GAMES.length-1)%GAMES.length].title;$('b-next').textContent=GAMES[(i+1)%GAMES.length].title+' →';window.scrollTo(0,0)}
 $('b-prev').onclick=()=>open((cur+GAMES.length-1)%GAMES.length);$('b-next').onclick=()=>open((cur+1)%GAMES.length);
 function nav(v){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v))}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{if(cleanup){try{cleanup()}catch(e){}cleanup=null}if(b.dataset.v==='home')home();else showLog()});
@@ -522,7 +749,8 @@ function drawChart(){const all=store.get('log',[]);const log=all.filter(s=>s.pre
   const st=$('log-stats');const by={};all.forEach(s=>{by[s.game]=(by[s.game]||0)+1});st.innerHTML=Object.keys(by).length?Object.entries(by).map(([k,v])=>`<div class="stat"><span>${(GAMES.find(g=>g.key===k)||{title:k}).title}</span><b>${v} session${v>1?'s':''}</b></div>`).join(''):'<p class="muted small">Play anything and it shows up here.</p>';
   if(!log.length)return;const cs=getComputedStyle(document.documentElement);const teal=cs.getPropertyValue('--teal').trim(),amber=cs.getPropertyValue('--amber').trim(),line=cs.getPropertyValue('--line').trim();const W=c.width,H=c.height,p=24,n=log.length;const x=i=>p+(n===1?W/2-p:(W-2*p)*i/(n-1)),y=v=>H-p-(H-2*p)*v/10;ctx.strokeStyle=line;ctx.lineWidth=1;[0,5,10].forEach(v=>{ctx.beginPath();ctx.moveTo(p,y(v));ctx.lineTo(W-p,y(v));ctx.stroke()});
   const draw=(k,col)=>{ctx.strokeStyle=col;ctx.lineWidth=3;ctx.beginPath();log.forEach((s,i)=>i?ctx.lineTo(x(i),y(s[k])):ctx.moveTo(x(i),y(s[k])));ctx.stroke();ctx.fillStyle=col;log.forEach((s,i)=>{ctx.beginPath();ctx.arc(x(i),y(s[k]),5,0,7);ctx.fill()})};draw('pre',amber);draw('post',teal)}
-home();
+if(!store.get('anchor_onb_v1'))onbWelcome();else if(!store.get('anchor_terms_v1'))afterOnboarding();else home();
+$('b-reset').onclick=()=>{if(confirm('Restart onboarding? Your log is kept.')){localStorage.removeItem('anchor_onb_v1');localStorage.removeItem('anchor_terms_v1');localStorage.removeItem('anchor_tier');location.reload()}};
 </script>
 </body>
 </html>
