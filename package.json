@@ -1,22 +1,29 @@
 {
   "name": "anchor-ios",
   "version": "1.0.0",
-  "description": "",
+  "description": "Anchor: DPDR training exercises, iOS (Capacitor)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "copy": "cap copy ios",
+    "sync": "cap sync ios",
+    "open": "cap open ios",
+    "check": "! grep -q 'YOUR_NAME\\|YOUR_ADDRESS\\|YOUR_EMAIL' www/index.html || (echo 'Terms placeholders (YOUR_NAME / YOUR_ADDRESS / YOUR_EMAIL) are still in www/index.html' && exit 1)"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@capacitor/app": "^8.1.1",
     "@capacitor/cli": "^8.5.2",
     "@capacitor/core": "^8.5.2",
     "@capacitor/haptics": "^8.0.2",
     "@capacitor/ios": "^8.5.2",
-    "@capacitor/motion": "^8.0.1"
+    "@capacitor/keyboard": "^8.0.5",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.3"
   },
   "devDependencies": {
     "typescript": "^7.0.2"
-  }
+  },
+  "private": true
 }

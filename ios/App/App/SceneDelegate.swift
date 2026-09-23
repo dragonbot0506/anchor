@@ -8,8 +8,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
 
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = CAPBridgeViewController()
+        let bridge = CAPBridgeViewController()
+        window?.rootViewController = bridge
         window?.makeKeyAndVisible()
+
+        // Match the launch screen and the page in both appearances so nothing flashes before first paint.
+        bridge.loadViewIfNeeded()
+        let launch = UIColor(named: "LaunchBackground")
+        bridge.view.backgroundColor = launch
+        bridge.webView?.backgroundColor = launch
+        bridge.webView?.scrollView.backgroundColor = launch
 
         SceneDelegateProxy.shared.scene(scene, willConnectTo: session, options: connectionOptions)
     }
