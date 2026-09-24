@@ -1027,11 +1027,24 @@ body::before{content:""; position:fixed; top:0; left:0; right:0; height:env(safe
 .onb.lock{overflow:hidden}
 .onb .bar div{transition:width .5s var(--ease)}
 /* intro morph */
-#intro.fade{background:transparent; pointer-events:none; transition:background .55s var(--ease)}
-#intro .wm.fadeout{opacity:0 !important; transition:opacity .28s var(--ease); animation:none}
-#intro .wm.move{animation:none; opacity:1; transition:transform .62s var(--ease)}
-#intro svg.move{transition:transform .62s var(--ease), color .62s var(--ease)}
-#intro.nodest svg,#intro.nodest .wm{opacity:0 !important; transition:opacity .45s var(--ease)}
+#intro{pointer-events:none}
+#intro .wm.fadeout{opacity:0 !important; transition:opacity .3s var(--ease); animation:none}
+#intro .wm.move{animation:none; opacity:1; transition:transform .68s cubic-bezier(.32,.72,0,1)}
+#intro svg.move{transition:transform .68s cubic-bezier(.32,.72,0,1), color .68s var(--ease)}
+#intro.nodest svg,#intro.nodest .wm{opacity:0 !important; transition:opacity .4s var(--ease)}
+#intro.out{transition:opacity .45s var(--ease), visibility 0s linear .45s}
+/* the page assembles beneath the landed mark: staggered rise */
+.welcome.title > *:nth-child(n+3){transition:opacity .6s var(--ease), transform .6s var(--ease)}
+.welcome.title.pre > *:nth-child(n+3){opacity:0; transform:translateY(16px); transition:none}
+.welcome.title > *:nth-child(3){transition-delay:.05s} .welcome.title > *:nth-child(4){transition-delay:.13s} .welcome.title > *:nth-child(5){transition-delay:.22s} .welcome.title > *:nth-child(6){transition-delay:.34s}
+#v-home > *:not(.home-head),#v-home .home-head > *:not(.brand){transition:opacity .55s var(--ease), transform .55s var(--ease)}
+#v-home.pre > *:not(.home-head),#v-home.pre .home-head > *:not(.brand){opacity:0; transform:translateY(14px); transition:none}
+#v-home .home-head > .display{transition-delay:.05s} #v-home .home-head > .disclosure{transition-delay:.12s} #v-home > #home-list{transition-delay:.2s} #v-home > .notice{transition-delay:.3s} #v-home > #b-faq,#v-home > .foot{transition-delay:.36s}
+.lchart path,.lchart circle{animation-play-state:paused}
+.chartcard.go .lchart path,.chartcard.go .lchart circle{animation-play-state:running}
+.welcome.title .cta{margin-top:auto}
+.lchart{max-height:132px}
+@media (prefers-reduced-motion: reduce){.welcome.title.pre > *,#v-home.pre > *,#v-home.pre .home-head > *{opacity:1; transform:none} .lchart path,.lchart circle{animation:none; opacity:1; stroke-dashoffset:0}}
 svg.hold,.wm.hold{opacity:0 !important}
 .ic.anchor{stroke-width:5}
 #intro.out svg{display:none}
@@ -1139,12 +1152,8 @@ svg.hold,.wm.hold{opacity:0 !important}
 .lchart .dpost{fill:var(--sienna); opacity:0; animation:fadein .5s 1.5s var(--ease) forwards}
 @keyframes drawline{to{stroke-dashoffset:0}}
 .chart-note{font-size:.72rem; color:var(--muted); line-height:1.35; margin:8px 0 0}
-.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:0 0 auto}
-.stat-tile{background:var(--card); border:1px solid var(--line); border-radius:var(--r-md); padding:8px 6px 7px; text-align:center}
-.stat-tile b{display:block; font-family:var(--serif); font-weight:600; font-size:1.55rem; line-height:1.05; color:var(--ink); font-variant-numeric:tabular-nums}
-.stat-tile b small{font-size:.85rem; font-weight:500; color:var(--ink-2); margin-left:2px}
-.stat-tile span{display:block; font-size:.7rem; color:var(--muted); line-height:1.25; margin-top:3px}
-.welcome.title .cta{margin-top:12px}
+.welcome.title .cta{margin-top:auto}
+.chartcard{margin-bottom:16px}
 .chart-note{margin-top:6px}
 .subwm{font-size:.78rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--terra-text); text-align:center; margin:-4px 0 8px}
 .chart-legend{justify-content:center; gap:16px; margin:0 0 6px; font-size:.75rem}
@@ -1154,8 +1163,8 @@ svg.hold,.wm.hold{opacity:0 !important}
 .welcome.start{justify-content:center; padding-top:0}
 .welcome.start .hero{margin:0 0 14px} .welcome.start .hint{margin:0 0 28px}
 .welcome.start .cta{margin-top:0}
-@media (max-height:760px){.welcome.title{padding-top:1vh} .welcome.title .glyph{width:52px; height:52px} .welcome.title .glyph .ic.anchor{width:52px; height:52px} .wm.big{font-size:2.2rem} .subwm{margin-bottom:6px} .tagline{font-size:1rem; margin-bottom:10px} .chartcard{padding:10px 12px 8px} .lchart{max-height:112px} .stat-tile b{font-size:1.35rem} .welcome.title .cta{margin-top:10px; min-height:50px}}
-@media (max-height:680px){.welcome.title .glyph{display:none} .chart-note{display:none} .tagline{display:none} .lchart{max-height:100px}}
+@media (max-height:760px){.welcome.title{padding-top:1vh} .welcome.title .glyph{width:52px; height:52px} .welcome.title .glyph .ic.anchor{width:52px; height:52px} .wm.big{font-size:2.2rem} .subwm{margin-bottom:6px} .tagline{font-size:1rem; margin-bottom:10px} .chartcard{padding:10px 12px 8px} .lchart{max-height:112px} .welcome.title .cta{min-height:50px}}
+@media (max-height:680px){.lchart{max-height:112px}}
 @media (prefers-reduced-motion: reduce){.lchart path,.lchart circle{animation:none; opacity:1; stroke-dashoffset:0}}
 </style>
 </head>
@@ -1752,17 +1761,19 @@ const I={
 };
 const glyph=(cls)=>`<div class="glyph ${cls||''}" aria-hidden="true">${I.anchor}</div>`;
 const RM=()=>!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
-function intro(done){const el=$('intro');if(!el||RM()){if(el)el.classList.add('out');done();return}el.innerHTML=`${I.anchor}<p class="wm big">Anchor</p>`;el.classList.remove('out');const returning=!!onbGet();done();
+let introActive=false;
+function revealPage(){introActive=false;document.querySelectorAll('.pre').forEach(p=>p.classList.remove('pre'));document.querySelectorAll('.chartcard').forEach(c=>c.classList.add('go'))}
+function intro(done){const el=$('intro');if(!el||RM()){if(el)el.classList.add('out');done();revealPage();return}el.innerHTML=`${I.anchor}<p class="wm big">Anchor</p>`;el.classList.remove('out');const returning=!!onbGet();introActive=true;done();
   const svg=el.querySelector('svg'),wm=el.querySelector('.wm');const t1=returning?1150:1750;setTimeout(()=>haptic(),Math.min(950,t1-200));
   setTimeout(()=>{try{document.querySelectorAll('.onb .body, main > section').forEach(b=>b.getAnimations().forEach(a=>a.finish()))}catch(e){}const gateOn=!$('gate').classList.contains('hidden'),onbOn=!$('onb').classList.contains('hidden');
     const vis=n=>n&&n.getBoundingClientRect().width>0?n:null;const textRect=n=>{const rg=document.createRange();rg.selectNodeContents(n);return rg.getBoundingClientRect()};
     const dest=vis(gateOn?null:onbOn?document.querySelector('#onb .welcome .glyph svg'):document.querySelector('#v-home .brand .mark svg'));
     const destWm=vis(gateOn?null:onbOn?document.querySelector('#onb .welcome .wm'):null);
     const fix=(n,r)=>{n.style.position='fixed';n.style.left=r.left+'px';n.style.top=r.top+'px';n.style.width=r.width+'px';n.style.height=r.height+'px';n.style.margin='0';n.style.transformOrigin='0 0';n.style.willChange='transform'};
-    const s=svg.getBoundingClientRect(),w=textRect(wm);fix(svg,s);fix(wm,w);el.classList.add('fade');if(!dest)el.classList.add('nodest');
+    const s=svg.getBoundingClientRect(),w=textRect(wm);fix(svg,s);fix(wm,w);if(!dest)el.classList.add('nodest');
     if(dest){const r=dest.getBoundingClientRect();dest.classList.add('hold');const sc=r.width/s.width;requestAnimationFrame(()=>{svg.classList.add('move');svg.style.transform=`translate(${r.left-s.left}px,${r.top-s.top}px) scale(${sc})`;svg.style.color=getComputedStyle(dest).color})}
     if(destWm){const r=textRect(destWm);destWm.classList.add('hold');const dx=(r.left+r.width/2)-(w.left+w.width/2),dy=(r.top+r.height/2)-(w.top+w.height/2);requestAnimationFrame(()=>{wm.classList.add('move');wm.style.transform=`translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px)`})}else wm.classList.add('fadeout');
-    setTimeout(()=>{if(dest)dest.classList.remove('hold');if(destWm)destWm.classList.remove('hold');el.classList.add('out');haptic('select')},700)},t1)}
+    setTimeout(()=>{if(dest)dest.classList.remove('hold');if(destWm)destWm.classList.remove('hold');el.classList.add('out');revealPage();haptic('select')},dest?660:420)},t1)}
 function syncInert(){const gateOn=!$('gate').classList.contains('hidden');const overlay=!$('onb').classList.contains('hidden')||gateOn||sheet.open;[document.querySelector('main'),document.querySelector('.tabbar')].forEach(el=>{if(!el)return;el.inert=overlay;if(overlay)el.setAttribute('aria-hidden','true');else el.removeAttribute('aria-hidden')});const o=$('onb');o.inert=gateOn;if(gateOn)o.setAttribute('aria-hidden','true');else o.removeAttribute('aria-hidden')}
 function focusHead(root){try{const h=(root||document).querySelector('h1');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}catch(e){}}
 const shortTag=t=>String(t).split(/[(.]/)[0].trim();
@@ -1810,7 +1821,7 @@ function faqRender(){const f=$('faq');if(f.childElementCount)return;f.innerHTML=
 /* ===== ROUTING ===== */
 function killGame(){if(cleanup){try{cleanup()}catch(e){}cleanup=null}closeSheet()}
 function show(v){['home','game','log','help'].forEach(k=>$('v-'+k).classList.toggle('hidden',k!==v));nav(v==='game'?'home':v);window.scrollTo(0,0);syncInert();focusHead($('v-'+v))}
-function home(){killGame();show('home');homeList()}
+function home(){killGame();show('home');homeList();if(introActive)$('v-home').classList.add('pre')}
 function showHelp(){killGame();show('help');faqRender()}
 (function(){const b=$('b-about'),a=$('about');b.onclick=()=>{haptic('select');const hidden=a.classList.toggle('hidden');b.setAttribute('aria-expanded',String(!hidden));b.classList.toggle('open',!hidden)}})();
 $('b-faq').onclick=()=>{haptic();showHelp()};$('b-help-home').onclick=()=>{haptic();home()};
@@ -1850,8 +1861,8 @@ function logChartSvg(){const pre=[8,8,7,7,6,6,5,5,4,4,3,3],post=[6,6,5,5,4,4,3,3
 function onbWelcome(){T_ONB.clear();const b=onbShell(null,false);
   b.innerHTML=`<div class="welcome title">${glyph()}<h1 class="wm big">Anchor</h1><p class="subwm">DPDR Recovery</p><p class="tagline">Short daily exercises, each built on a published study.</p>
   <div class="chartcard"><div class="chart-head"><span class="eyebrow">Your Log, over four weeks</span></div><div class="legend chart-legend"><span><i class="sw before"></i>Before a session</span><span><i class="sw after"></i>After a session</span></div>${logChartSvg()}<p class="chart-note">How detached you feel, rated before and after each exercise. An illustration, not a result.</p></div>
-  <div class="stats"><div class="stat-tile"><b>20</b><span>exercises</span></div><div class="stat-tile"><b>5<small> min</small></b><span>a day</span></div><div class="stat-tile"><b>0</b><span>data leaves your phone</span></div></div>
   <button class="cta" id="onb-go">Get started</button></div>`;
+  const wrap=b.querySelector('.welcome');if(introActive)wrap.classList.add('pre');else b.querySelector('.chartcard').classList.add('go');
   b.querySelector('#onb-go').onclick=()=>onbGo(()=>onbStart(),'medium')}
 function onbStart(){T_ONB.clear();const W=SURVEY.welcome;const b=onbShell(null,true);$('onb-back').onclick=()=>onbGo(()=>onbWelcome(),'light','back');
   b.innerHTML=`<div class="welcome start"><h1 class="hero centre">${esc((PLAN.welcome&&PLAN.welcome.hero)||W.hero)}</h1><p class="hint">Fourteen questions. Tap an answer to move on.</p><button class="cta" id="onb-go">${esc(W.cta)}</button></div>`;
