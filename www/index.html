@@ -1716,13 +1716,13 @@ const glyph=(cls)=>`<div class="glyph ${cls||''}" aria-hidden="true">${I.anchor}
 const RM=()=>!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
 function intro(done){const el=$('intro');if(!el||RM()){if(el)el.classList.add('out');done();return}el.innerHTML=`${I.anchor}<p class="wm">Anchor</p>`;el.classList.remove('out');const returning=!!onbGet();done();
   const svg=el.querySelector('svg'),wm=el.querySelector('.wm');const t1=returning?1150:1750;setTimeout(()=>haptic(),Math.min(950,t1-200));
-  setTimeout(()=>{const gateOn=!$('gate').classList.contains('hidden'),onbOn=!$('onb').classList.contains('hidden');
+  setTimeout(()=>{try{document.querySelectorAll('.onb .body, main > section').forEach(b=>b.getAnimations().forEach(a=>a.finish()))}catch(e){}const gateOn=!$('gate').classList.contains('hidden'),onbOn=!$('onb').classList.contains('hidden');
     const dest=gateOn?null:onbOn?document.querySelector('#onb .welcome .glyph svg'):document.querySelector('#v-home .brand .mark svg');
     const destWm=gateOn?null:onbOn?document.querySelector('#onb .welcome .wm'):null;
     const fix=(n,r)=>{n.style.position='fixed';n.style.left=r.left+'px';n.style.top=r.top+'px';n.style.width=r.width+'px';n.style.height=r.height+'px';n.style.margin='0';n.style.transformOrigin='0 0';n.style.willChange='transform'};
     const s=svg.getBoundingClientRect(),w=wm.getBoundingClientRect();fix(svg,s);fix(wm,w);el.classList.add('fade');if(!dest)el.classList.add('nodest');
     if(dest){const r=dest.getBoundingClientRect();dest.classList.add('hold');const sc=r.width/s.width;requestAnimationFrame(()=>{svg.classList.add('move');svg.style.transform=`translate(${r.left-s.left}px,${r.top-s.top}px) scale(${sc})`;svg.style.color=getComputedStyle(dest).color})}
-    if(destWm){const r=destWm.getBoundingClientRect();destWm.classList.add('hold');requestAnimationFrame(()=>{wm.classList.add('move');wm.style.transform=`translate(${r.left-w.left}px,${r.top-w.top}px)`})}else wm.classList.add('fadeout');
+    if(destWm){const r=destWm.getBoundingClientRect();destWm.classList.add('hold');const dx=(r.left+r.width/2)-(w.left+w.width/2),dy=(r.top+r.height/2)-(w.top+w.height/2);requestAnimationFrame(()=>{wm.classList.add('move');wm.style.transform=`translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px)`})}else wm.classList.add('fadeout');
     setTimeout(()=>{if(dest)dest.classList.remove('hold');if(destWm)destWm.classList.remove('hold');el.classList.add('out');haptic('select')},700)},t1)}
 function syncInert(){const gateOn=!$('gate').classList.contains('hidden');const overlay=!$('onb').classList.contains('hidden')||gateOn||sheet.open;[document.querySelector('main'),document.querySelector('.tabbar')].forEach(el=>{if(!el)return;el.inert=overlay;if(overlay)el.setAttribute('aria-hidden','true');else el.removeAttribute('aria-hidden')});const o=$('onb');o.inert=gateOn;if(gateOn)o.setAttribute('aria-hidden','true');else o.removeAttribute('aria-hidden')}
 function focusHead(root){try{const h=(root||document).querySelector('h1');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}catch(e){}}
