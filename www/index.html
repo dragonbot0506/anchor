@@ -1146,8 +1146,8 @@ svg.hold,.wm.hold{opacity:0 !important}
 .lchart{display:block; width:100%; height:auto}
 .lchart .grid{stroke:var(--line); stroke-width:1}
 .lchart path{fill:none; stroke-width:2.5; stroke-linejoin:round; stroke-linecap:round; stroke-dasharray:640; stroke-dashoffset:640; animation:drawline 1.6s .25s var(--ease) forwards}
-.lchart .pre{stroke:var(--ochre); stroke-dasharray:6 5; animation:none; stroke-dashoffset:0; opacity:0; animation:fadein .8s .5s var(--ease) forwards}
-.lchart .post{stroke:var(--sienna)}
+.lchart .ln-pre{stroke:var(--ochre); stroke-dasharray:6 5; stroke-dashoffset:0; opacity:0; animation:fadein .8s .5s var(--ease) forwards}
+.lchart .ln-post{stroke:var(--sienna)}
 .lchart .dpre{fill:var(--card); stroke:var(--ochre); stroke-width:2; opacity:0; animation:fadein .5s .9s var(--ease) forwards}
 .lchart .dpost{fill:var(--sienna); opacity:0; animation:fadein .5s 1.5s var(--ease) forwards}
 @keyframes drawline{to{stroke-dashoffset:0}}
@@ -1762,7 +1762,7 @@ const I={
 const glyph=(cls)=>`<div class="glyph ${cls||''}" aria-hidden="true">${I.anchor}</div>`;
 const RM=()=>!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
 let introActive=false;
-function revealPage(){introActive=false;document.querySelectorAll('.pre').forEach(p=>p.classList.remove('pre'));document.querySelectorAll('.chartcard').forEach(c=>c.classList.add('go'))}
+function revealPage(){introActive=false;document.querySelectorAll('.welcome.pre, #v-home.pre').forEach(p=>p.classList.remove('pre'));document.querySelectorAll('.chartcard').forEach(c=>c.classList.add('go'))}
 function intro(done){const el=$('intro');if(!el||RM()){if(el)el.classList.add('out');done();revealPage();return}el.innerHTML=`${I.anchor}<p class="wm big">Anchor</p>`;el.classList.remove('out');const returning=!!onbGet();introActive=true;done();
   const svg=el.querySelector('svg'),wm=el.querySelector('.wm');const t1=returning?1150:1750;setTimeout(()=>haptic(),Math.min(950,t1-200));
   setTimeout(()=>{try{document.querySelectorAll('.onb .body, main > section').forEach(b=>b.getAnimations().forEach(a=>a.finish()))}catch(e){}const gateOn=!$('gate').classList.contains('hidden'),onbOn=!$('onb').classList.contains('hidden');
@@ -1857,7 +1857,7 @@ function logChartSvg(){const pre=[8,8,7,7,6,6,5,5,4,4,3,3],post=[6,6,5,5,4,4,3,3
   const line=a=>a.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');const dots=(a,cls)=>a.map((v,i)=>`<circle class="${cls}" cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="3.1"/>`).join('');
   const ylab=[[10,'10'],[5,'5'],[0,'0']].map(([v,t])=>`<line class="grid" x1="${L}" x2="${W-R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text class="lab" x="${L-7}" y="${(y(v)+3.5).toFixed(1)}" text-anchor="end">${t}</text>`).join('');
   const xlab=['Week 1','Week 2','Week 3','Week 4'].map((t,k)=>`<text class="lab" x="${x(k*3+1).toFixed(1)}" y="${H-8}" text-anchor="middle">${t}</text>`).join('');
-  return `<svg class="lchart" viewBox="0 0 ${W} ${H}" aria-hidden="true">${ylab}${xlab}<text class="lab axis" x="${L}" y="${T-3}" text-anchor="start">How detached, 0 to 10</text><path class="pre" d="${line(pre)}"/><path class="post" d="${line(post)}"/>${dots(pre,'dpre')}${dots(post,'dpost')}</svg>`}
+  return `<svg class="lchart" viewBox="0 0 ${W} ${H}" aria-hidden="true">${ylab}${xlab}<text class="lab axis" x="${L}" y="${T-3}" text-anchor="start">How detached, 0 to 10</text><path class="ln-pre" d="${line(pre)}"/><path class="ln-post" d="${line(post)}"/>${dots(pre,'dpre')}${dots(post,'dpost')}</svg>`}
 function onbWelcome(){T_ONB.clear();const b=onbShell(null,false);
   b.innerHTML=`<div class="welcome title">${glyph()}<h1 class="wm big">Anchor</h1><p class="subwm">DPDR Recovery</p><p class="tagline">Short daily exercises, each built on a published study.</p>
   <div class="chartcard"><div class="chart-head"><span class="eyebrow">Your Log, over four weeks</span></div><div class="legend chart-legend"><span><i class="sw before"></i>Before a session</span><span><i class="sw after"></i>After a session</span></div>${logChartSvg()}<p class="chart-note">How detached you feel, rated before and after each exercise. An illustration, not a result.</p></div>
