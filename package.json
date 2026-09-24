@@ -7,7 +7,7 @@
     "copy": "cap copy ios",
     "sync": "cap sync ios",
     "open": "cap open ios",
-    "check": "! grep -q 'YOUR_NAME\\|YOUR_ADDRESS\\|YOUR_EMAIL' www/index.html || (echo 'Terms placeholders (YOUR_NAME / YOUR_ADDRESS / YOUR_EMAIL) are still in www/index.html' && exit 1)"
+    "check": "! grep -q 'YOUR_NAME\\|YOUR_ADDRESS\\|YOUR_EMAIL\\|TODO before App Store submission' www/index.html || (echo 'Not ready to ship: Terms placeholders or the StoreKit TODO are still in www/index.html' && exit 1)"
   },
   "keywords": [],
   "author": "",

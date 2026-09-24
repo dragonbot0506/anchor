@@ -44,6 +44,19 @@ then run again from Xcode.
 - Capacitor plugins: Haptics, StatusBar (follows light/dark), Keyboard (native resize, no accessory bar),
   App (pauses Web Audio in the background), SplashScreen.
 
+## Product structure and the free/Pro model
+
+- Home hub: streak, "Take the survey" until the survey is done, then two big buttons: **Routine** (the three core
+  exercises plus the survey's Lab pick, in order, with per-day done state) and **Anchor** (a rotating grounding
+  exercise for when the feeling is present).
+- Tabs: Trends (daily 1 to 10 check-in, presence vs wellbeing chart, My story, sessions log), Home, Games (all 20),
+  Help (FAQ).
+- Free: routine, one Anchor a day, four Games-tab openings a day, check-ins, Trends chart and log.
+  Pro: unlimited exercises and Anchor, and My story. Limits live in `anchor_day` (local date) in localStorage.
+- My story is rule-based and on-device (no model, no network); the copy never calls it AI. Keep it that way
+  unless a real backend exists and the privacy policy is updated.
+- Each game shows the study text and Learn more at the very end, after the prev/next buttons.
+
 ## Before submitting to the App Store
 
 - **Billing is a placeholder.** The paywall in `onbPaywall()` flips a local flag with no transaction.
