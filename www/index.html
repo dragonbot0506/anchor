@@ -1121,12 +1121,13 @@ svg.hold,.wm.hold{opacity:0 !important}
 @media (prefers-reduced-motion: reduce){ #intro .ic.anchor circle,#intro .ic.anchor path{animation:none; stroke-dashoffset:0} #intro .wm{animation:none; opacity:1} .opt.on{animation:none} }
 
 /* ---------- title page ---------- */
-.welcome.title{justify-content:flex-start; padding-top:4vh}
-.welcome.title .glyph{width:64px; height:64px; margin:6px auto 4px} .welcome.title .glyph .ic.anchor{width:64px; height:64px}
+.welcome.title{justify-content:flex-start; padding-top:2vh}
+.welcome.title .glyph{width:56px; height:56px; margin:4px auto 2px} .welcome.title .glyph .ic.anchor{width:56px; height:56px}
 .wm.big{font-size:2.6rem; font-weight:600; letter-spacing:-.02em; line-height:1; margin:2px 0 8px}
 .welcome.title .wm{margin-bottom:8px}
-.tagline{font-family:var(--serif); font-size:1.08rem; line-height:1.4; color:var(--ink-2); text-align:center; margin:0 auto 16px; max-width:32ch}
-.chartcard{background:var(--card); border:1px solid var(--line); border-radius:var(--r-lg); padding:12px 14px 10px; box-shadow:var(--shadow-sm); margin:0 0 12px}
+.tagline{font-family:var(--serif); font-size:1.02rem; line-height:1.35; color:var(--ink-2); text-align:center; margin:0 auto 10px; max-width:34ch}
+.chartcard{background:var(--card); border:1px solid var(--line); border-radius:var(--r-lg); padding:10px 14px 8px; box-shadow:var(--shadow-sm); margin:0 0 10px}
+.lchart{max-height:118px}
 .chart-head{display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:6px}
 .chart-head .eyebrow{margin:0} .chart-head .legend{margin:0; font-size:.75rem}
 .lchart{display:block; width:100%; height:auto}
@@ -1139,16 +1140,22 @@ svg.hold,.wm.hold{opacity:0 !important}
 @keyframes drawline{to{stroke-dashoffset:0}}
 .chart-note{font-size:.72rem; color:var(--muted); line-height:1.35; margin:8px 0 0}
 .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:0 0 auto}
-.stat-tile{background:var(--card); border:1px solid var(--line); border-radius:var(--r-md); padding:10px 8px 9px; text-align:center}
+.stat-tile{background:var(--card); border:1px solid var(--line); border-radius:var(--r-md); padding:8px 6px 7px; text-align:center}
 .stat-tile b{display:block; font-family:var(--serif); font-weight:600; font-size:1.55rem; line-height:1.05; color:var(--ink); font-variant-numeric:tabular-nums}
 .stat-tile b small{font-size:.85rem; font-weight:500; color:var(--ink-2); margin-left:2px}
 .stat-tile span{display:block; font-size:.7rem; color:var(--muted); line-height:1.25; margin-top:3px}
-.welcome.title .cta{margin-top:16px}
+.welcome.title .cta{margin-top:12px}
+.chart-note{margin-top:6px}
+.subwm{font-size:.78rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--terra-text); text-align:center; margin:-4px 0 8px}
+.chart-legend{justify-content:center; gap:16px; margin:0 0 6px; font-size:.75rem}
+.lchart .lab{font-family:var(--sans); font-size:9.5px; fill:var(--muted)} .lchart .lab.axis{font-size:8.5px; letter-spacing:.04em; text-transform:uppercase}
+#intro .wm.big{margin:0}
+#intro.out .wm{display:none}
 .welcome.start{justify-content:center; padding-top:0}
 .welcome.start .hero{margin:0 0 14px} .welcome.start .hint{margin:0 0 28px}
 .welcome.start .cta{margin-top:0}
-@media (max-height:760px){.welcome.title{padding-top:1vh} .welcome.title .glyph{width:52px; height:52px} .welcome.title .glyph .ic.anchor{width:52px; height:52px} .wm.big{font-size:2.2rem} .tagline{font-size:1rem; margin-bottom:10px} .chartcard{padding:10px 12px 8px} .lchart{max-height:92px} .stat-tile b{font-size:1.35rem} .welcome.title .cta{margin-top:10px; min-height:50px}}
-@media (max-height:680px){.welcome.title .glyph{display:none} .chart-note{display:none} .lchart{max-height:80px}}
+@media (max-height:760px){.welcome.title{padding-top:1vh} .welcome.title .glyph{width:52px; height:52px} .welcome.title .glyph .ic.anchor{width:52px; height:52px} .wm.big{font-size:2.2rem} .subwm{margin-bottom:6px} .tagline{font-size:1rem; margin-bottom:10px} .chartcard{padding:10px 12px 8px} .lchart{max-height:112px} .stat-tile b{font-size:1.35rem} .welcome.title .cta{margin-top:10px; min-height:50px}}
+@media (max-height:680px){.welcome.title .glyph{display:none} .chart-note{display:none} .tagline{display:none} .lchart{max-height:100px}}
 @media (prefers-reduced-motion: reduce){.lchart path,.lchart circle{animation:none; opacity:1; stroke-dashoffset:0}}
 </style>
 </head>
@@ -1745,7 +1752,7 @@ const I={
 };
 const glyph=(cls)=>`<div class="glyph ${cls||''}" aria-hidden="true">${I.anchor}</div>`;
 const RM=()=>!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
-function intro(done){const el=$('intro');if(!el||RM()){if(el)el.classList.add('out');done();return}el.innerHTML=`${I.anchor}<p class="wm">Anchor</p>`;el.classList.remove('out');const returning=!!onbGet();done();
+function intro(done){const el=$('intro');if(!el||RM()){if(el)el.classList.add('out');done();return}el.innerHTML=`${I.anchor}<p class="wm big">Anchor</p>`;el.classList.remove('out');const returning=!!onbGet();done();
   const svg=el.querySelector('svg'),wm=el.querySelector('.wm');const t1=returning?1150:1750;setTimeout(()=>haptic(),Math.min(950,t1-200));
   setTimeout(()=>{try{document.querySelectorAll('.onb .body, main > section').forEach(b=>b.getAnimations().forEach(a=>a.finish()))}catch(e){}const gateOn=!$('gate').classList.contains('hidden'),onbOn=!$('onb').classList.contains('hidden');
     const vis=n=>n&&n.getBoundingClientRect().width>0?n:null;const textRect=n=>{const rg=document.createRange();rg.selectNodeContents(n);return rg.getBoundingClientRect()};
@@ -1754,7 +1761,7 @@ function intro(done){const el=$('intro');if(!el||RM()){if(el)el.classList.add('o
     const fix=(n,r)=>{n.style.position='fixed';n.style.left=r.left+'px';n.style.top=r.top+'px';n.style.width=r.width+'px';n.style.height=r.height+'px';n.style.margin='0';n.style.transformOrigin='0 0';n.style.willChange='transform'};
     const s=svg.getBoundingClientRect(),w=textRect(wm);fix(svg,s);fix(wm,w);el.classList.add('fade');if(!dest)el.classList.add('nodest');
     if(dest){const r=dest.getBoundingClientRect();dest.classList.add('hold');const sc=r.width/s.width;requestAnimationFrame(()=>{svg.classList.add('move');svg.style.transform=`translate(${r.left-s.left}px,${r.top-s.top}px) scale(${sc})`;svg.style.color=getComputedStyle(dest).color})}
-    if(destWm){const r=textRect(destWm);destWm.classList.add('hold');const dx=(r.left+r.width/2)-(w.left+w.width/2),dy=(r.top+r.height/2)-(w.top+w.height/2),ws=r.width/w.width;wm.style.transformOrigin='50% 50%';requestAnimationFrame(()=>{wm.classList.add('move');wm.style.transform=`translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px) scale(${ws.toFixed(3)})`})}else wm.classList.add('fadeout');
+    if(destWm){const r=textRect(destWm);destWm.classList.add('hold');const dx=(r.left+r.width/2)-(w.left+w.width/2),dy=(r.top+r.height/2)-(w.top+w.height/2);requestAnimationFrame(()=>{wm.classList.add('move');wm.style.transform=`translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px)`})}else wm.classList.add('fadeout');
     setTimeout(()=>{if(dest)dest.classList.remove('hold');if(destWm)destWm.classList.remove('hold');el.classList.add('out');haptic('select')},700)},t1)}
 function syncInert(){const gateOn=!$('gate').classList.contains('hidden');const overlay=!$('onb').classList.contains('hidden')||gateOn||sheet.open;[document.querySelector('main'),document.querySelector('.tabbar')].forEach(el=>{if(!el)return;el.inert=overlay;if(overlay)el.setAttribute('aria-hidden','true');else el.removeAttribute('aria-hidden')});const o=$('onb');o.inert=gateOn;if(gateOn)o.setAttribute('aria-hidden','true');else o.removeAttribute('aria-hidden')}
 function focusHead(root){try{const h=(root||document).querySelector('h1');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}catch(e){}}
@@ -1835,12 +1842,14 @@ function onbShell(pct,back,vt){const o=$('onb');o.classList.remove('hidden');o.c
   const p=pct==null?0:Math.round(pct);top.classList.toggle('nobar',pct==null);top.querySelector('.bar div').style.width=p+'%';const bar=top.querySelector('.bar');bar.setAttribute('aria-valuenow',p);if(vt)bar.setAttribute('aria-valuetext',vt);else bar.removeAttribute('aria-valuetext');const bk=top.querySelector('.back');bk.style.visibility=back?'visible':'hidden';bk.onclick=null;
   const b=el(`<div class="body enter-${onbDir}"></div>`);o.appendChild(b);o.scrollTop=0;syncInert();setTimeout(()=>focusHead(o),30);return b}
 /* illustrative log chart for the title page: before (dashed, ochre) and after (solid, sienna) ratings across sessions */
-function logChartSvg(){const pre=[7,7,6,6,5,5,4,4,3,3],post=[5,5,4,4,3,3,2,2,2,1];const W=300,H=110,px=14,py=10;const x=i=>px+(W-2*px)*i/(pre.length-1),y=v=>py+(H-2*py)*(1-v/8);
-  const line=a=>a.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');const dots=(a,cls)=>a.map((v,i)=>`<circle class="${cls}" cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="3.2"/>`).join('');
-  return `<svg class="lchart" viewBox="0 0 ${W} ${H}" aria-hidden="true">${[0,4,8].map(v=>`<line class="grid" x1="${px}" x2="${W-px}" y1="${y(v)}" y2="${y(v)}"/>`).join('')}<path class="pre" d="${line(pre)}"/><path class="post" d="${line(post)}"/>${dots(pre,'dpre')}${dots(post,'dpost')}</svg>`}
+function logChartSvg(){const pre=[8,8,7,7,6,6,5,5,4,4,3,3],post=[6,6,5,5,4,4,3,3,2,2,2,1];const W=320,H=136,L=26,R=8,T=12,B=24;const n=pre.length;const x=i=>L+(W-L-R)*i/(n-1),y=v=>T+(H-T-B)*(1-v/10);
+  const line=a=>a.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');const dots=(a,cls)=>a.map((v,i)=>`<circle class="${cls}" cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="3.1"/>`).join('');
+  const ylab=[[10,'10'],[5,'5'],[0,'0']].map(([v,t])=>`<line class="grid" x1="${L}" x2="${W-R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text class="lab" x="${L-7}" y="${(y(v)+3.5).toFixed(1)}" text-anchor="end">${t}</text>`).join('');
+  const xlab=['Week 1','Week 2','Week 3','Week 4'].map((t,k)=>`<text class="lab" x="${x(k*3+1).toFixed(1)}" y="${H-8}" text-anchor="middle">${t}</text>`).join('');
+  return `<svg class="lchart" viewBox="0 0 ${W} ${H}" aria-hidden="true">${ylab}${xlab}<text class="lab axis" x="${L}" y="${T-3}" text-anchor="start">How detached, 0 to 10</text><path class="pre" d="${line(pre)}"/><path class="post" d="${line(post)}"/>${dots(pre,'dpre')}${dots(post,'dpost')}</svg>`}
 function onbWelcome(){T_ONB.clear();const b=onbShell(null,false);
-  b.innerHTML=`<div class="welcome title">${glyph()}<h1 class="wm big">Anchor</h1><p class="tagline">Short daily exercises for depersonalisation and derealisation, each built on a published study.</p>
-  <div class="chartcard"><div class="chart-head"><span class="eyebrow">What the Log shows</span><span class="legend"><span><i class="sw before"></i>Before</span><span><i class="sw after"></i>After</span></span></div>${logChartSvg()}<p class="chart-note">How you rate yourself before and after each session, over time. An illustration, not a result.</p></div>
+  b.innerHTML=`<div class="welcome title">${glyph()}<h1 class="wm big">Anchor</h1><p class="subwm">DPDR Recovery</p><p class="tagline">Short daily exercises, each built on a published study.</p>
+  <div class="chartcard"><div class="chart-head"><span class="eyebrow">Your Log, over four weeks</span></div><div class="legend chart-legend"><span><i class="sw before"></i>Before a session</span><span><i class="sw after"></i>After a session</span></div>${logChartSvg()}<p class="chart-note">How detached you feel, rated before and after each exercise. An illustration, not a result.</p></div>
   <div class="stats"><div class="stat-tile"><b>20</b><span>exercises</span></div><div class="stat-tile"><b>5<small> min</small></b><span>a day</span></div><div class="stat-tile"><b>0</b><span>data leaves your phone</span></div></div>
   <button class="cta" id="onb-go">Get started</button></div>`;
   b.querySelector('#onb-go').onclick=()=>onbGo(()=>onbStart(),'medium')}
