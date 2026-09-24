@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'co.winograd.anchor',   // change to your own reverse-domain id
+  appId: 'com.leoprince.anchor',
   appName: 'Anchor',
   webDir: 'www',
   ios: {
