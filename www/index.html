@@ -1119,6 +1119,37 @@ svg.hold,.wm.hold{opacity:0 !important}
 .gate-hint{flex:1 1 100%; margin:0 0 8px; text-align:center; font-size:.8rem; color:var(--muted)}
 .gate .row button:disabled{opacity:.35}
 @media (prefers-reduced-motion: reduce){ #intro .ic.anchor circle,#intro .ic.anchor path{animation:none; stroke-dashoffset:0} #intro .wm{animation:none; opacity:1} .opt.on{animation:none} }
+
+/* ---------- title page ---------- */
+.welcome.title{justify-content:flex-start; padding-top:4vh}
+.welcome.title .glyph{width:64px; height:64px; margin:6px auto 4px} .welcome.title .glyph .ic.anchor{width:64px; height:64px}
+.wm.big{font-size:2.6rem; font-weight:600; letter-spacing:-.02em; line-height:1; margin:2px 0 8px}
+.welcome.title .wm{margin-bottom:8px}
+.tagline{font-family:var(--serif); font-size:1.08rem; line-height:1.4; color:var(--ink-2); text-align:center; margin:0 auto 16px; max-width:32ch}
+.chartcard{background:var(--card); border:1px solid var(--line); border-radius:var(--r-lg); padding:12px 14px 10px; box-shadow:var(--shadow-sm); margin:0 0 12px}
+.chart-head{display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:6px}
+.chart-head .eyebrow{margin:0} .chart-head .legend{margin:0; font-size:.75rem}
+.lchart{display:block; width:100%; height:auto}
+.lchart .grid{stroke:var(--line); stroke-width:1}
+.lchart path{fill:none; stroke-width:2.5; stroke-linejoin:round; stroke-linecap:round; stroke-dasharray:640; stroke-dashoffset:640; animation:drawline 1.6s .25s var(--ease) forwards}
+.lchart .pre{stroke:var(--ochre); stroke-dasharray:6 5; animation:none; stroke-dashoffset:0; opacity:0; animation:fadein .8s .5s var(--ease) forwards}
+.lchart .post{stroke:var(--sienna)}
+.lchart .dpre{fill:var(--card); stroke:var(--ochre); stroke-width:2; opacity:0; animation:fadein .5s .9s var(--ease) forwards}
+.lchart .dpost{fill:var(--sienna); opacity:0; animation:fadein .5s 1.5s var(--ease) forwards}
+@keyframes drawline{to{stroke-dashoffset:0}}
+.chart-note{font-size:.72rem; color:var(--muted); line-height:1.35; margin:8px 0 0}
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:0 0 auto}
+.stat-tile{background:var(--card); border:1px solid var(--line); border-radius:var(--r-md); padding:10px 8px 9px; text-align:center}
+.stat-tile b{display:block; font-family:var(--serif); font-weight:600; font-size:1.55rem; line-height:1.05; color:var(--ink); font-variant-numeric:tabular-nums}
+.stat-tile b small{font-size:.85rem; font-weight:500; color:var(--ink-2); margin-left:2px}
+.stat-tile span{display:block; font-size:.7rem; color:var(--muted); line-height:1.25; margin-top:3px}
+.welcome.title .cta{margin-top:16px}
+.welcome.start{justify-content:center; padding-top:0}
+.welcome.start .hero{margin:0 0 14px} .welcome.start .hint{margin:0 0 28px}
+.welcome.start .cta{margin-top:0}
+@media (max-height:760px){.welcome.title{padding-top:1vh} .welcome.title .glyph{width:52px; height:52px} .welcome.title .glyph .ic.anchor{width:52px; height:52px} .wm.big{font-size:2.2rem} .tagline{font-size:1rem; margin-bottom:10px} .chartcard{padding:10px 12px 8px} .lchart{max-height:92px} .stat-tile b{font-size:1.35rem} .welcome.title .cta{margin-top:10px; min-height:50px}}
+@media (max-height:680px){.welcome.title .glyph{display:none} .chart-note{display:none} .lchart{max-height:80px}}
+@media (prefers-reduced-motion: reduce){.lchart path,.lchart circle{animation:none; opacity:1; stroke-dashoffset:0}}
 </style>
 </head>
 <body>
@@ -1717,12 +1748,13 @@ const RM=()=>!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)'
 function intro(done){const el=$('intro');if(!el||RM()){if(el)el.classList.add('out');done();return}el.innerHTML=`${I.anchor}<p class="wm">Anchor</p>`;el.classList.remove('out');const returning=!!onbGet();done();
   const svg=el.querySelector('svg'),wm=el.querySelector('.wm');const t1=returning?1150:1750;setTimeout(()=>haptic(),Math.min(950,t1-200));
   setTimeout(()=>{try{document.querySelectorAll('.onb .body, main > section').forEach(b=>b.getAnimations().forEach(a=>a.finish()))}catch(e){}const gateOn=!$('gate').classList.contains('hidden'),onbOn=!$('onb').classList.contains('hidden');
-    const dest=gateOn?null:onbOn?document.querySelector('#onb .welcome .glyph svg'):document.querySelector('#v-home .brand .mark svg');
-    const destWm=gateOn?null:onbOn?document.querySelector('#onb .welcome .wm'):null;
+    const vis=n=>n&&n.getBoundingClientRect().width>0?n:null;const textRect=n=>{const rg=document.createRange();rg.selectNodeContents(n);return rg.getBoundingClientRect()};
+    const dest=vis(gateOn?null:onbOn?document.querySelector('#onb .welcome .glyph svg'):document.querySelector('#v-home .brand .mark svg'));
+    const destWm=vis(gateOn?null:onbOn?document.querySelector('#onb .welcome .wm'):null);
     const fix=(n,r)=>{n.style.position='fixed';n.style.left=r.left+'px';n.style.top=r.top+'px';n.style.width=r.width+'px';n.style.height=r.height+'px';n.style.margin='0';n.style.transformOrigin='0 0';n.style.willChange='transform'};
-    const s=svg.getBoundingClientRect(),w=wm.getBoundingClientRect();fix(svg,s);fix(wm,w);el.classList.add('fade');if(!dest)el.classList.add('nodest');
+    const s=svg.getBoundingClientRect(),w=textRect(wm);fix(svg,s);fix(wm,w);el.classList.add('fade');if(!dest)el.classList.add('nodest');
     if(dest){const r=dest.getBoundingClientRect();dest.classList.add('hold');const sc=r.width/s.width;requestAnimationFrame(()=>{svg.classList.add('move');svg.style.transform=`translate(${r.left-s.left}px,${r.top-s.top}px) scale(${sc})`;svg.style.color=getComputedStyle(dest).color})}
-    if(destWm){const r=destWm.getBoundingClientRect();destWm.classList.add('hold');const dx=(r.left+r.width/2)-(w.left+w.width/2),dy=(r.top+r.height/2)-(w.top+w.height/2);requestAnimationFrame(()=>{wm.classList.add('move');wm.style.transform=`translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px)`})}else wm.classList.add('fadeout');
+    if(destWm){const r=textRect(destWm);destWm.classList.add('hold');const dx=(r.left+r.width/2)-(w.left+w.width/2),dy=(r.top+r.height/2)-(w.top+w.height/2),ws=r.width/w.width;wm.style.transformOrigin='50% 50%';requestAnimationFrame(()=>{wm.classList.add('move');wm.style.transform=`translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px) scale(${ws.toFixed(3)})`})}else wm.classList.add('fadeout');
     setTimeout(()=>{if(dest)dest.classList.remove('hold');if(destWm)destWm.classList.remove('hold');el.classList.add('out');haptic('select')},700)},t1)}
 function syncInert(){const gateOn=!$('gate').classList.contains('hidden');const overlay=!$('onb').classList.contains('hidden')||gateOn||sheet.open;[document.querySelector('main'),document.querySelector('.tabbar')].forEach(el=>{if(!el)return;el.inert=overlay;if(overlay)el.setAttribute('aria-hidden','true');else el.removeAttribute('aria-hidden')});const o=$('onb');o.inert=gateOn;if(gateOn)o.setAttribute('aria-hidden','true');else o.removeAttribute('aria-hidden')}
 function focusHead(root){try{const h=(root||document).querySelector('h1');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}catch(e){}}
@@ -1802,10 +1834,20 @@ function onbShell(pct,back,vt){const o=$('onb');o.classList.remove('hidden');o.c
   if(!top){o.innerHTML='';top=el(`<div class="top"><button class="back" id="onb-back" aria-label="Back">${I.back}</button><div class="bar" role="progressbar" aria-label="Survey progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><div style="width:0%"></div></div><span class="count"></span></div>`);o.appendChild(top)}else{const old=o.querySelector('.body');if(old)old.remove()}
   const p=pct==null?0:Math.round(pct);top.classList.toggle('nobar',pct==null);top.querySelector('.bar div').style.width=p+'%';const bar=top.querySelector('.bar');bar.setAttribute('aria-valuenow',p);if(vt)bar.setAttribute('aria-valuetext',vt);else bar.removeAttribute('aria-valuetext');const bk=top.querySelector('.back');bk.style.visibility=back?'visible':'hidden';bk.onclick=null;
   const b=el(`<div class="body enter-${onbDir}"></div>`);o.appendChild(b);o.scrollTop=0;syncInert();setTimeout(()=>focusHead(o),30);return b}
-function onbWelcome(){T_ONB.clear();const W=SURVEY.welcome;const b=onbShell(null,false);
-  b.innerHTML=`<div class="welcome">${glyph()}<p class="wm">Anchor</p><h1 class="hero centre">${esc((PLAN.welcome&&PLAN.welcome.hero)||W.hero)}</h1><button class="cta" id="onb-go">${esc(W.cta)}</button><p class="hint">Fourteen questions. Tap an answer to move on.</p></div>`;
+/* illustrative log chart for the title page: before (dashed, ochre) and after (solid, sienna) ratings across sessions */
+function logChartSvg(){const pre=[7,7,6,6,5,5,4,4,3,3],post=[5,5,4,4,3,3,2,2,2,1];const W=300,H=110,px=14,py=10;const x=i=>px+(W-2*px)*i/(pre.length-1),y=v=>py+(H-2*py)*(1-v/8);
+  const line=a=>a.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');const dots=(a,cls)=>a.map((v,i)=>`<circle class="${cls}" cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="3.2"/>`).join('');
+  return `<svg class="lchart" viewBox="0 0 ${W} ${H}" aria-hidden="true">${[0,4,8].map(v=>`<line class="grid" x1="${px}" x2="${W-px}" y1="${y(v)}" y2="${y(v)}"/>`).join('')}<path class="pre" d="${line(pre)}"/><path class="post" d="${line(post)}"/>${dots(pre,'dpre')}${dots(post,'dpost')}</svg>`}
+function onbWelcome(){T_ONB.clear();const b=onbShell(null,false);
+  b.innerHTML=`<div class="welcome title">${glyph()}<h1 class="wm big">Anchor</h1><p class="tagline">Short daily exercises for depersonalisation and derealisation, each built on a published study.</p>
+  <div class="chartcard"><div class="chart-head"><span class="eyebrow">What the Log shows</span><span class="legend"><span><i class="sw before"></i>Before</span><span><i class="sw after"></i>After</span></span></div>${logChartSvg()}<p class="chart-note">How you rate yourself before and after each session, over time. An illustration, not a result.</p></div>
+  <div class="stats"><div class="stat-tile"><b>20</b><span>exercises</span></div><div class="stat-tile"><b>5<small> min</small></b><span>a day</span></div><div class="stat-tile"><b>0</b><span>data leaves your phone</span></div></div>
+  <button class="cta" id="onb-go">Get started</button></div>`;
+  b.querySelector('#onb-go').onclick=()=>onbGo(()=>onbStart(),'medium')}
+function onbStart(){T_ONB.clear();const W=SURVEY.welcome;const b=onbShell(null,true);$('onb-back').onclick=()=>onbGo(()=>onbWelcome(),'light','back');
+  b.innerHTML=`<div class="welcome start"><h1 class="hero centre">${esc((PLAN.welcome&&PLAN.welcome.hero)||W.hero)}</h1><p class="hint">Fourteen questions. Tap an answer to move on.</p><button class="cta" id="onb-go">${esc(W.cta)}</button></div>`;
   b.querySelector('#onb-go').onclick=()=>onbGo(()=>onbQ(0),'medium')}
-function onbQ(i){T_ONB.clear();store.set('anchor_onb_draft',{i,ans:onbAns});if(i>=Q.length)return onbLoading();const q=Q[i];const b=onbShell(100*(i+.5)/Q.length,true,`Question ${i+1} of ${Q.length}`);$('onb-back').onclick=()=>onbGo(()=>i===0?onbWelcome():onbQ(i-1),'light','back');
+function onbQ(i){T_ONB.clear();store.set('anchor_onb_draft',{i,ans:onbAns});if(i>=Q.length)return onbLoading();const q=Q[i];const b=onbShell(100*(i+.5)/Q.length,true,`Question ${i+1} of ${Q.length}`);$('onb-back').onclick=()=>onbGo(()=>i===0?onbStart():onbQ(i-1),'light','back');
   const prev=onbAns[q.k];let sel=new Set(prev==null?[]:[].concat(prev).map(String));
   b.innerHTML=`<div class="qwrap">${onbResumed?'<p class="resume-note">Picking up where you left off.</p>':''}<h1 class="q" id="onb-q">${esc(q.q)}</h1><div class="opts" id="onb-opts" role="${q.multi?'group':'radiogroup'}" aria-labelledby="onb-q"></div></div>${q.multi?`<button class="cta" id="onb-next"${sel.size?'':' disabled'}>Continue</button>`:''}`;
   const box=b.querySelector('#onb-opts');
